@@ -1,24 +1,11 @@
-"use client";
-
-import {
-  Phone,
-  Mail,
-  MapPin,
-  Wrench,
-  Flame,
-  Droplets,
-  Settings,
-  Shield,
-  Clock,
-  Menu,
-  X,
-  MessageCircle,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Wrench, Shield, Clock, MessageCircle } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
 import ContactForm from "@/components/contact-form";
+import EditableContent from "@/components/editable-content";
+import Gallery from "@/components/gallery";
+import HeroImages from "@/components/hero-images";
+import ServicesSection from "@/components/services-section";
+import MobileNav from "@/components/mobile-nav";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE_DISPLAY,
@@ -26,146 +13,13 @@ import {
   OWNER_NAME,
 } from "@/lib/contact";
 
-export default function HomePageContent() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+type HomePageContentProps = {
+  initialContent?: Record<string, string | undefined>;
+};
 
-  const heroImages = [
-    { title: "Rozdělovač vytápění", image: "/images/mechanical-room-heating-manifold.webp" },
-    {
-      title: "Rozvody vody",
-      image: "/images/bathroom-water-supply-rough-in.webp",
-    },
-    { title: "Topení", image: "/images/radiator-under-window.webp" },
-    {
-      title: "Rekonstrukce",
-      image: "/images/interior-renovation-copper-pipes-room.webp",
-    },
-    {
-      title: "Inženýrské sítě",
-      image: "/images/railway-utility-conduits-trench.webp",
-    },
-  ];
-
-  const categories = [
-    {
-      id: "koupelny",
-      title: "Koupelny a sanitární instalace",
-      intro:
-        "Kompletní rozvody, montáže zařizovacích předmětů a přesné spády pro bezproblémový provoz.",
-      items: [
-        {
-          title: "Rozvody koupelny",
-          description:
-            "Vedení odpadů a vody pro koupelny v novostavbách i rekonstrukcích.",
-          image: "/images/bathroom-plumbing-rough-in.webp",
-        },
-        {
-          title: "Sprchový žlab – rozvody",
-          description:
-            "Instalace lineárních žlabů a správné napojení na sifon.",
-          image: "/images/bathroom-shower-rough-in-linear-drain.webp",
-        },
-        {
-          title: "Přívody vody – rozvody",
-          description: "Distribuce studené a teplé vody včetně uzlů a uzávěrů.",
-          image: "/images/bathroom-water-supply-rough-in.webp",
-        },
-        {
-          title: "Montáž WC",
-          description: "Montáž závěsných i stojících toalet a tlaková zkouška.",
-          image: "/images/toilet-installation-finished.webp",
-        },
-      ],
-    },
-    {
-      id: "topeni",
-      title: "Topení a radiátory",
-      intro:
-        "Dodávka a montáž radiátorů, rozvody v podlahách a vyvážení okruhů.",
-      items: [
-        {
-          title: "Radiátor pod oknem",
-          description: "Montáž radiátorů, ventily, termohlavice a odvzdušnění.",
-          image: "/images/radiator-under-window.webp",
-        },
-        {
-          title: "Rozdělovač vytápění",
-          description:
-            "Zapojení rozdělovačů podlahového topení a radiátorových okruhů.",
-          image: "/images/mechanical-room-heating-manifold.webp",
-        },
-        {
-          title: "Rozvody v podlaze",
-          description:
-            "Fixace a příprava rozvodů pro zalití, kontrola tras a dilatací.",
-          image: "/images/rough-in-floor-piping-corridor.webp",
-        },
-      ],
-    },
-    {
-      id: "technologie",
-      title: "Technologie a strojovny",
-      intro:
-        "Instalace a servis technologických celků pro stabilní a bezpečný provoz.",
-      items: [
-        {
-          title: "Vzduchotechnická jednotka",
-          description:
-            "Montáž a napojení technologií v kotelnách a strojovnách.",
-          image: "/images/mechanical-room-robatherm-unit.webp",
-        },
-        {
-          title: "Domácí vodárna – expanze",
-          description:
-            "Instalace expanzních nádob a čerpadel pro stabilní tlak.",
-          image: "/images/domestic-water-booster-reflex-tank.webp",
-        },
-      ],
-    },
-    {
-      id: "site",
-      title: "Exteriér a inženýrské sítě",
-      intro:
-        "Pokládka a napojení potrubních tras vně objektů včetně šachet a ochranných prvků.",
-      items: [
-        {
-          title: "Výkop a uložení potrubí",
-          description: "Rýhy, pískové lože a ochrana potrubí dle norem.",
-          image: "/images/railway-utility-conduits-trench.webp",
-        },
-        {
-          title: "Technická šachta – potrubí",
-          description: "Osazení a propojení potrubí v kolektorech a šachtách.",
-          image: "/images/railway-utility-vault-piping.webp",
-        },
-        {
-          title: "Vodoměrná šachta",
-          description: "Kompletace šachet, osazení vodoměrů a uzávěrů.",
-          image: "/images/water-meter-pit-assembly.webp",
-        },
-      ],
-    },
-    {
-      id: "rekonstrukce",
-      title: "Rekonstrukce a opravy",
-      intro:
-        "Výměny starých rozvodů, péče o detaily a uvedení do čistého stavu.",
-      items: [
-        {
-          title: "Měděné rozvody v interiéru",
-          description: "Precizní pájení a estetické vedení instalací.",
-          image: "/images/interior-renovation-copper-pipes-room.webp",
-        },
-        {
-          title: "Suterén – před/po",
-          description:
-            "Opravy a úklid potrubních tras v suterénech a chodbách.",
-          image: "/images/basement-corridor-piping-before-after.webp",
-        },
-      ],
-    },
-  ];
-
+export default function HomePageContent({
+  initialContent = {},
+}: HomePageContentProps) {
   return (
     <div className="min-h-screen bg-neutral-100">
       {/* Navigation */}
@@ -212,12 +66,12 @@ export default function HomePageContent() {
               >
                 Kontakt
               </a>
-              <a
+              {/* <a
                 href="#oblast"
                 className="text-neutral-600 hover:text-black transition-colors text-sm"
               >
                 Oblast
-              </a>
+              </a> */}
             </div>
 
             {/* CTA Button */}
@@ -230,70 +84,11 @@ export default function HomePageContent() {
               </a>
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-black hover:text-neutral-600 focus:outline-none"
-              >
-                {mobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
-              </button>
-            </div>
+            {/* Mobile Menu Button + Drawer (client island) */}
+            <MobileNav />
           </div>
 
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden border-t border-neutral-200 py-6">
-              <div className="flex flex-col space-y-4">
-                <a
-                  href="#sluzby"
-                  className="text-black hover:text-neutral-600 transition-colors px-4 py-2 text-sm"
-                >
-                  Služby
-                </a>
-                <a
-                  href="#omne"
-                  className="text-black hover:text-neutral-600 transition-colors px-4 py-2 text-sm"
-                >
-                  O mně
-                </a>
-                <a
-                  href="#koupelny"
-                  className="text-black hover:text-neutral-600 transition-colors px-4 py-2 text-sm"
-                >
-                  Koupelny
-                </a>
-                <a
-                  href="#topeni"
-                  className="text-black hover:text-neutral-600 transition-colors px-4 py-2 text-sm"
-                >
-                  Topení
-                </a>
-                <a
-                  href="#kontakt"
-                  className="text-black hover:text-neutral-600 transition-colors px-4 py-2 text-sm"
-                >
-                  Kontakt
-                </a>
-                <a
-                  href="#oblast"
-                  className="text-black hover:text-neutral-600 transition-colors px-4 py-2 text-sm"
-                >
-                  Oblast
-                </a>
-                <a
-                  href="#kontakt"
-                  className="bg-black text-white px-4 py-2 rounded-full hover:bg-neutral-800 transition-colors mx-4 text-center text-sm"
-                >
-                  Poptat
-                </a>
-              </div>
-            </div>
-          )}
+          {/* Mobile Menu is rendered inside MobileNav */}
         </div>
       </nav>
 
@@ -319,37 +114,50 @@ export default function HomePageContent() {
                 </p>
 
                 <div className="space-y-2">
-                  <h1
+                  <EditableContent
+                    id="hero.title1"
+                    as="h1"
                     className="text-6xl lg:text-8xl font-black text-white leading-none tracking-tight"
-                    data-macaly="hero-title"
-                  >
-                    instalace
-                  </h1>
-                  <h1 className="text-6xl lg:text-8xl font-black text-white leading-none tracking-tight">
-                    topení
-                  </h1>
-                  <h1 className="text-6xl lg:text-8xl font-light text-orange-200 leading-none tracking-tight">
-                    koupelny
-                  </h1>
-                  <h1 className="text-6xl lg:text-8xl font-light text-orange-200/80 leading-none tracking-tight">
-                    rozvody vody
-                  </h1>
-                  <h1 className="text-6xl lg:text-8xl font-light text-orange-300/60 leading-none tracking-tight">
-                    rekonstrukce
-                  </h1>
+                    placeholder="instalace"
+                    initialValue={initialContent["hero.title1"]}
+                  />
+                  <EditableContent
+                    id="hero.title2"
+                    as="h1"
+                    className="text-6xl lg:text-8xl font-black text-white leading-none tracking-tight"
+                    placeholder="topení"
+                    initialValue={initialContent["hero.title2"]}
+                  />
+                  <EditableContent
+                    id="hero.title3"
+                    as="h1"
+                    className="text-6xl lg:text-8xl font-light text-orange-200 leading-none tracking-tight"
+                    placeholder="koupelny"
+                    initialValue={initialContent["hero.title3"]}
+                  />
+                  <EditableContent
+                    id="hero.title4"
+                    as="h1"
+                    className="text-6xl lg:text-8xl font-light text-orange-200/80 leading-none tracking-tight"
+                    placeholder="rozvody vody"
+                    initialValue={initialContent["hero.title4"]}
+                  />
+                  <EditableContent
+                    id="hero.title5"
+                    as="h1"
+                    className="text-6xl lg:text-8xl font-light text-orange-300/60 leading-none tracking-tight"
+                    placeholder="rekonstrukce"
+                    initialValue={initialContent["hero.title5"]}
+                  />
                 </div>
 
                 <div className="mt-16 flex gap-3">
-                  <button
+                  <a
+                    href="#sluzby"
                     className="px-8 py-4 bg-white text-orange-500 text-sm font-bold rounded-full hover:bg-orange-50 transition-colors shadow-lg"
-                    onClick={() =>
-                      document
-                        .getElementById("sluzby")
-                        ?.scrollIntoView({ behavior: "smooth" })
-                    }
                   >
                     Prohlédnout služby
-                  </button>
+                  </a>
                   <a
                     href="#kontakt"
                     className="px-8 py-4 border border-white/70 text-white text-sm font-bold rounded-full hover:bg-white/10 transition-colors"
@@ -360,101 +168,21 @@ export default function HomePageContent() {
               </div>
 
               <div className="relative">
-                <div className="grid grid-cols-2 gap-4 ml-auto max-w-xl">
-                  {heroImages.slice(0, 4).map((item, i) => (
-                    <div
-                      key={i}
-                      className={`relative overflow-hidden rounded-lg ${i % 3 === 0 ? "col-span-2 aspect-[16/9]" : "aspect-[4/3]"}`}
-                    >
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0" />
-                      <span className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/40 px-2 py-1 rounded-full backdrop-blur-sm">
-                        {item.title}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+                <HeroImages initialContent={initialContent} />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services Section grouped into categories (now dark) */}
-      <section id="sluzby" className="relative py-28 bg-black text-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <h2 className="text-4xl lg:text-6xl font-black mb-12">Služby</h2>
-
-          {/* Value props moved here */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            <div className="border border-white/10 rounded-xl p-6 bg-white/5">
-              <div className="flex items-center gap-3 mb-3">
-                <Shield className="w-5 h-5" />
-                <h3 className="text-lg font-semibold">Kvalita a jistota</h3>
-              </div>
-              <p className="text-sm text-neutral-300">Práce dle osvědčených postupů, čisté detaily a dlouhá životnost instalací.</p>
-            </div>
-            <div className="border border-white/10 rounded-xl p-6 bg-white/5">
-              <div className="flex items-center gap-3 mb-3">
-                <Clock className="w-5 h-5" />
-                <h3 className="text-lg font-semibold">Spolehlivost a termíny</h3>
-              </div>
-              <p className="text-sm text-neutral-300">Dochvilnost, domluvené termíny a průběžná komunikace bez překvapení.</p>
-            </div>
-            <div className="border border-white/10 rounded-xl p-6 bg-white/5">
-              <div className="flex items-center gap-3 mb-3">
-                <Wrench className="w-5 h-5" />
-                <h3 className="text-lg font-semibold">Praktická řešení</h3>
-              </div>
-              <p className="text-sm text-neutral-300">Návrh řešení na míru, které dává smysl pro provoz i údržbu.</p>
-            </div>
-          </div>
-
-          <div className="space-y-24">
-            {categories.map((cat, idx) => (
-              <div key={cat.id} id={cat.id}>
-                <div className="flex items-end justify-between mb-8">
-                  <div>
-                    <h3 className="text-3xl lg:text-4xl font-bold">{cat.title}</h3>
-                    {cat.intro && (
-                      <p className="text-neutral-300 mt-2 max-w-2xl">{cat.intro}</p>
-                    )}
-                  </div>
-                  <div className={`hidden md:block h-10 w-10 rounded-full ${idx % 2 === 0 ? 'bg-white/10' : 'bg-white/5'}`}></div>
-                </div>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {cat.items.map((item, i) => (
-                    <div key={i} className="group bg-neutral-900 rounded-xl shadow-sm border border-neutral-800 overflow-hidden">
-                      <div className="relative aspect-[4/3]">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="p-5">
-                        <h4 className="text-lg font-semibold text-white">{item.title}</h4>
-                        <p className="text-sm text-neutral-300 mt-1">{item.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Services Section (component with editable content) */}
+      <ServicesSection initialContent={initialContent} />
 
       {/* About Me Section (orange) */}
-      <section id="omne" className="relative py-24 bg-orange-500 text-white overflow-hidden">
+      <section
+        id="omne"
+        className="relative py-24 bg-orange-500 text-white overflow-hidden"
+      >
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-10 -right-10 w-56 h-56 border-2 border-white/20 rounded-full" />
           <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-orange-600/20 rotate-45" />
@@ -462,36 +190,69 @@ export default function HomePageContent() {
         <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl lg:text-6xl font-black mb-4">O mně</h2>
-              <p className="text-orange-50/90 text-lg leading-relaxed mb-6">
-                Jsem {OWNER_NAME}. Dělám instalace vody, topení a rekonstrukce koupelen v Praze a okolí. 
-                Držím se jednoduchosti, přesnosti a čistého provedení. Vždy vysvětlím možnosti a doporučím 
-                řešení, které dává smysl pro váš prostor i rozpočet.
-              </p>
+              <EditableContent
+                id="about.title"
+                as="h2"
+                className="text-4xl lg:text-6xl font-black mb-4"
+                placeholder="O mně"
+                initialValue={initialContent["about.title"]}
+              />
+              <EditableContent
+                id="about.lead"
+                as="p"
+                className="text-orange-50/90 text-lg leading-relaxed mb-6"
+                placeholder={`Jsem ${OWNER_NAME}. Dělám instalace vody, topení a rekonstrukce koupelen v Praze a okolí. Držím se jednoduchosti, přesnosti a čistého provedení. Vždy vysvětlím možnosti a doporučím řešení, které dává smysl pro váš prostor i rozpočet.`}
+                initialValue={initialContent["about.lead"]}
+              />
               <div className="flex gap-3">
-                <a href="#kontakt" className="px-6 py-3 bg-white text-orange-600 rounded-full text-sm font-bold hover:bg-orange-50 transition-colors">Kontakt</a>
-                <a href="#sluzby" className="px-6 py-3 border border-white/40 text-white rounded-full text-sm font-bold hover:bg-white/10 transition-colors">Služby</a>
+                <a
+                  href="#kontakt"
+                  className="px-6 py-3 bg-white text-orange-600 rounded-full text-sm font-bold hover:bg-orange-50 transition-colors"
+                >
+                  Kontakt
+                </a>
+                <a
+                  href="#sluzby"
+                  className="px-6 py-3 border border-white/40 text-white rounded-full text-sm font-bold hover:bg-white/10 transition-colors"
+                >
+                  Služby
+                </a>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-lg">
-                <Image src="/images/vojta-kostkan-elevator-carrying-tools.webp" alt="Vojta Kostkan v terénu" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+                <Image
+                  src="/images/vojta-kostkan-elevator-carrying-tools.webp"
+                  alt="Vojta Kostkan v terénu"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
               </div>
               <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-lg translate-y-6">
-                <Image src="/images/vojta-kostkan-copper-pipe-brazing-in-ceiling.webp" alt="Vojta Kostkan – pájení mědi" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+                <Image
+                  src="/images/vojta-kostkan-copper-pipe-brazing-in-ceiling.webp"
+                  alt="Vojta Kostkan – pájení mědi"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      
       {/* Contact Section */}
       <section id="kontakt" className="py-20 px-6 lg:px-12 bg-neutral-50">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-6xl font-light text-black mb-8">
-            Kontakt
-          </h2>
+          <EditableContent
+            id="contact.title"
+            as="h2"
+            className="text-4xl lg:text-6xl font-light text-black mb-8"
+            placeholder="Kontakt"
+            initialValue={initialContent["contact.title"]}
+          />
 
           <div className="grid md:grid-cols-4 gap-8 mb-16">
             <div>
@@ -511,7 +272,7 @@ export default function HomePageContent() {
                 WhatsApp
               </h3>
               <a
-                href={`https://wa.me/${CONTACT_PHONE_E164.replace('+', '')}`}
+                href={`https://wa.me/${CONTACT_PHONE_E164.replace("+", "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-xl text-black hover:text-neutral-600 transition-colors"
@@ -537,7 +298,13 @@ export default function HomePageContent() {
               <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
                 Oblast
               </h3>
-              <p className="text-xl text-black">Praha a okolí</p>
+              <EditableContent
+                id="contact.area"
+                as="p"
+                className="text-xl text-black"
+                placeholder="Praha a okolí"
+                initialValue={initialContent["contact.area"]}
+              />
             </div>
           </div>
 
@@ -545,62 +312,30 @@ export default function HomePageContent() {
         </div>
       </section>
 
-      {/* Gallery Section for additional photos (moved to last) */}
-      <section id="galerie" className="relative py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <h2 className="text-4xl lg:text-6xl font-black text-black mb-12">
-            Galerie
-          </h2>
-          <p className="text-neutral-600 mb-8 max-w-3xl">
-            Ukázky dalších prací a detailů instalací.
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: 'Geberit – předstěna', image: '/images/bathroom-inwall-toilet-geberit-rough-in.webp' },
-              { title: 'Umývadlo – rozvody', image: '/images/bathroom-sink-plumbing-rough-in.webp' },
-              { title: 'Drážky ve zdi – rozvody', image: '/images/bathroom-wall-chase-water-supply-and-drain-rough-in.webp' },
-              { title: 'Ohřívač vody s expanzí', image: '/images/hot-water-cylinder-with-expansion-vessel.webp' },
-              { title: 'Výměna průmyslových uzávěrů', image: '/images/industrial-gate-valves-replacement-before-after.webp' },
-              { title: 'Strojovna – zásobníky a potrubí', image: '/images/mechanical-room-storage-tanks-and-copper-piping.webp' },
-              { title: 'Vodoměrná sestava', image: '/images/water-meter-assembly-with-valves.webp' },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="group bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden"
-              >
-                <div className="relative aspect-[4/3]">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-4">
-                  <h4 className="text-sm font-medium text-black">
-                    {item.title}
-                  </h4>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Gallery Section (server component with editable captions) */}
+      <Gallery initialContent={initialContent} />
 
       {/* Cooperation Section */}
       <section id="spoluprace" className="py-24 bg-neutral-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl lg:text-6xl font-black text-black mb-4">Spolupráce</h2>
-              <p className="text-neutral-700 text-lg leading-relaxed mb-6">
-                Podle potřeby pracuji v tandemu s kolegou <strong>Járou Kroupou</strong>
-                (také instalatér a topenář). Na zakázkách tak umíme zajistit
-                větší kapacitu a plynulý průběh prací – od koupelen přes rozvody
-                vody až po topení – abyste vše vyřešili na jeden zátah a bez
-                zbytečných prodlev.
-              </p>
+              <EditableContent
+                id="coop.title"
+                as="h2"
+                className="text-4xl lg:text-6xl font-black text-black mb-4"
+                placeholder="Spolupráce"
+                initialValue={initialContent["coop.title"]}
+              />
+              <EditableContent
+                id="coop.lead"
+                as="p"
+                className="text-neutral-700 text-lg leading-relaxed mb-6"
+                placeholder={
+                  "Podle potřeby pracuji v tandemu s kolegou Járou Kroupou (také instalatér a topenář). Na zakázkách tak umíme zajistit větší kapacitu a plynulý průběh prací – od koupelen přes rozvody vody až po topení – abyste vše vyřešili na jeden zátah a bez zbytečných prodlev."
+                }
+                initialValue={initialContent["coop.lead"]}
+              />
               <div className="flex gap-3">
                 <a
                   href="https://www.jarakroupa.cz/"
@@ -621,20 +356,36 @@ export default function HomePageContent() {
             <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
-                  <h3 className="text-sm font-semibold text-neutral-800">Voda & Topení</h3>
-                  <p className="text-sm text-neutral-600 mt-1">Instalace, rozvody, rekonstrukce</p>
+                  <h3 className="text-sm font-semibold text-neutral-800">
+                    Voda & Topení
+                  </h3>
+                  <p className="text-sm text-neutral-600 mt-1">
+                    Instalace, rozvody, rekonstrukce
+                  </p>
                 </div>
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
-                  <h3 className="text-sm font-semibold text-neutral-800">Dvojice řemeslníků</h3>
-                  <p className="text-sm text-neutral-600 mt-1">Dvě zkušené ruce navíc, rychlejší průběh</p>
+                  <h3 className="text-sm font-semibold text-neutral-800">
+                    Dvojice řemeslníků
+                  </h3>
+                  <p className="text-sm text-neutral-600 mt-1">
+                    Dvě zkušené ruce navíc, rychlejší průběh
+                  </p>
                 </div>
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
-                  <h3 className="text-sm font-semibold text-neutral-800">Koordinace profesí</h3>
-                  <p className="text-sm text-neutral-600 mt-1">Jedna domluva, plynulý průběh prací</p>
+                  <h3 className="text-sm font-semibold text-neutral-800">
+                    Koordinace profesí
+                  </h3>
+                  <p className="text-sm text-neutral-600 mt-1">
+                    Jedna domluva, plynulý průběh prací
+                  </p>
                 </div>
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
-                  <h3 className="text-sm font-semibold text-neutral-800">Termíny</h3>
-                  <p className="text-sm text-neutral-600 mt-1">Minimální čekání mezi etapami</p>
+                  <h3 className="text-sm font-semibold text-neutral-800">
+                    Termíny
+                  </h3>
+                  <p className="text-sm text-neutral-600 mt-1">
+                    Minimální čekání mezi etapami
+                  </p>
                 </div>
               </div>
             </div>
