@@ -136,29 +136,59 @@ export default function ServicesSection({ initialContent = {} }: ServicesSection
           <div className="border border-white/10 rounded-xl p-6 bg-white/5">
             <div className="flex items-center gap-3 mb-3">
               <Shield className="w-5 h-5" />
-              <h3 className="text-lg font-semibold">Kvalita a jistota</h3>
+              <EditableContent
+                id={`services.values.quality.title`}
+                as="h3"
+                className="text-lg font-semibold"
+                placeholder="Kvalita a jistota"
+                initialValue={initialContent[`services.values.quality.title`]}
+              />
             </div>
-            <p className="text-sm text-neutral-300">
-              Práce dle osvědčených postupů, čisté detaily a dlouhá životnost instalací.
-            </p>
+            <EditableContent
+              id={`services.values.quality.desc`}
+              as="p"
+              className="text-sm text-neutral-300"
+              placeholder="Práce dle osvědčených postupů, čisté detaily a dlouhá životnost instalací."
+              initialValue={initialContent[`services.values.quality.desc`]}
+            />
           </div>
           <div className="border border-white/10 rounded-xl p-6 bg-white/5">
             <div className="flex items-center gap-3 mb-3">
               <Clock className="w-5 h-5" />
-              <h3 className="text-lg font-semibold">Spolehlivost a termíny</h3>
+              <EditableContent
+                id={`services.values.reliability.title`}
+                as="h3"
+                className="text-lg font-semibold"
+                placeholder="Spolehlivost a termíny"
+                initialValue={initialContent[`services.values.reliability.title`]}
+              />
             </div>
-            <p className="text-sm text-neutral-300">
-              Dochvilnost, domluvené termíny a průběžná komunikace bez překvapení.
-            </p>
+            <EditableContent
+              id={`services.values.reliability.desc`}
+              as="p"
+              className="text-sm text-neutral-300"
+              placeholder="Dochvilnost, domluvené termíny a průběžná komunikace bez překvapení."
+              initialValue={initialContent[`services.values.reliability.desc`]}
+            />
           </div>
           <div className="border border-white/10 rounded-xl p-6 bg-white/5">
             <div className="flex items-center gap-3 mb-3">
               <Wrench className="w-5 h-5" />
-              <h3 className="text-lg font-semibold">Praktická řešení</h3>
+              <EditableContent
+                id={`services.values.practical.title`}
+                as="h3"
+                className="text-lg font-semibold"
+                placeholder="Praktická řešení"
+                initialValue={initialContent[`services.values.practical.title`]}
+              />
             </div>
-            <p className="text-sm text-neutral-300">
-              Návrh řešení na míru, které dává smysl pro provoz i údržbu.
-            </p>
+            <EditableContent
+              id={`services.values.practical.desc`}
+              as="p"
+              className="text-sm text-neutral-300"
+              placeholder="Návrh řešení na míru, které dává smysl pro provoz i údržbu."
+              initialValue={initialContent[`services.values.practical.desc`]}
+            />
           </div>
         </div>
 

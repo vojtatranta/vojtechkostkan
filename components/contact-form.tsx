@@ -6,8 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import EditableContent from '@/components/editable-content';
 
-export default function ContactForm() {
+type ContactFormProps = {
+  initialContent?: Record<string, string | undefined>;
+};
+
+export default function ContactForm({ initialContent = {} }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -59,16 +64,29 @@ export default function ContactForm() {
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
-      <h3 className="text-2xl font-light text-black mb-6 text-center">
-        Potřebujete pomoc s instalacemi, topením nebo opravami?
-      </h3>
-      <p className="text-neutral-600 mb-8 text-center">
-        Jako kvalifikovaný instalatér a topenář vám osobně pomůžu s jakýmkoliv problémem. 
-        Napište mi a já se vám co nejdříve ozvu na telefon.
-      </p>
-      <p className="text-sm text-neutral-500 mb-8 text-center">
-        Pracuji v Praze a okolí.
-      </p>
+      <EditableContent
+        id="contact.form.title"
+        as="h3"
+        className="text-2xl font-light text-black mb-6 text-center"
+        placeholder="Potřebujete pomoc s instalacemi, topením nebo opravami?"
+        initialValue={initialContent["contact.form.title"]}
+      />
+      <EditableContent
+        id="contact.form.desc1"
+        as="p"
+        className="text-neutral-600 mb-8 text-center"
+        placeholder={
+          "Jako kvalifikovaný instalatér a topenář vám osobně pomůžu s jakýmkoliv problémem. Napište mi a já se vám co nejdříve ozvu na telefon."
+        }
+        initialValue={initialContent["contact.form.desc1"]}
+      />
+      <EditableContent
+        id="contact.form.desc2"
+        as="p"
+        className="text-sm text-neutral-500 mb-8 text-center"
+        placeholder="Pracuji v Praze a okolí."
+        initialValue={initialContent["contact.form.desc2"]}
+      />
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid md:grid-cols-2 gap-6">
@@ -129,13 +147,25 @@ export default function ContactForm() {
             disabled={isSubmitting}
             className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-full transition-colors"
           >
-            {isSubmitting ? 'Odesílám...' : 'Poslat poptávku'}
+            {isSubmitting ? 'Odesílám...' : (
+              <EditableContent
+                id="contact.form.button"
+                as="span"
+                className="inline"
+                placeholder="Poslat poptávku"
+                initialValue={initialContent["contact.form.button"]}
+              />
+            )}
           </Button>
         </div>
 
-        <p className="text-xs text-neutral-500 text-center">
-          * Označená pole jsou povinná
-        </p>
+        <EditableContent
+          id="contact.form.footnote"
+          as="p"
+          className="text-xs text-neutral-500 text-center"
+          placeholder="* Označená pole jsou povinná"
+          initialValue={initialContent["contact.form.footnote"]}
+        />
       </form>
     </div>
   );

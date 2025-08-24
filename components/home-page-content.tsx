@@ -308,7 +308,7 @@ export default function HomePageContent({
             </div>
           </div>
 
-          <ContactForm />
+          <ContactForm initialContent={initialContent} />
         </div>
       </section>
 
@@ -356,36 +356,68 @@ export default function HomePageContent({
             <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
-                  <h3 className="text-sm font-semibold text-neutral-800">
-                    Voda & Topení
-                  </h3>
-                  <p className="text-sm text-neutral-600 mt-1">
-                    Instalace, rozvody, rekonstrukce
-                  </p>
+                  <EditableContent
+                    id={`coop.cards.0.title`}
+                    as="h3"
+                    className="text-sm font-semibold text-neutral-800"
+                    placeholder="Voda & Topení"
+                    initialValue={initialContent[`coop.cards.0.title`]}
+                  />
+                  <EditableContent
+                    id={`coop.cards.0.desc`}
+                    as="p"
+                    className="text-sm text-neutral-600 mt-1"
+                    placeholder="Instalace, rozvody, rekonstrukce"
+                    initialValue={initialContent[`coop.cards.0.desc`]}
+                  />
                 </div>
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
-                  <h3 className="text-sm font-semibold text-neutral-800">
-                    Dvojice řemeslníků
-                  </h3>
-                  <p className="text-sm text-neutral-600 mt-1">
-                    Dvě zkušené ruce navíc, rychlejší průběh
-                  </p>
+                  <EditableContent
+                    id={`coop.cards.1.title`}
+                    as="h3"
+                    className="text-sm font-semibold text-neutral-800"
+                    placeholder="Dvojice řemeslníků"
+                    initialValue={initialContent[`coop.cards.1.title`]}
+                  />
+                  <EditableContent
+                    id={`coop.cards.1.desc`}
+                    as="p"
+                    className="text-sm text-neutral-600 mt-1"
+                    placeholder="Dvě zkušené ruce navíc, rychlejší průběh"
+                    initialValue={initialContent[`coop.cards.1.desc`]}
+                  />
                 </div>
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
-                  <h3 className="text-sm font-semibold text-neutral-800">
-                    Koordinace profesí
-                  </h3>
-                  <p className="text-sm text-neutral-600 mt-1">
-                    Jedna domluva, plynulý průběh prací
-                  </p>
+                  <EditableContent
+                    id={`coop.cards.2.title`}
+                    as="h3"
+                    className="text-sm font-semibold text-neutral-800"
+                    placeholder="Koordinace profesí"
+                    initialValue={initialContent[`coop.cards.2.title`]}
+                  />
+                  <EditableContent
+                    id={`coop.cards.2.desc`}
+                    as="p"
+                    className="text-sm text-neutral-600 mt-1"
+                    placeholder="Jedna domluva, plynulý průběh prací"
+                    initialValue={initialContent[`coop.cards.2.desc`]}
+                  />
                 </div>
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
-                  <h3 className="text-sm font-semibold text-neutral-800">
-                    Termíny
-                  </h3>
-                  <p className="text-sm text-neutral-600 mt-1">
-                    Minimální čekání mezi etapami
-                  </p>
+                  <EditableContent
+                    id={`coop.cards.3.title`}
+                    as="h3"
+                    className="text-sm font-semibold text-neutral-800"
+                    placeholder="Termíny"
+                    initialValue={initialContent[`coop.cards.3.title`]}
+                  />
+                  <EditableContent
+                    id={`coop.cards.3.desc`}
+                    as="p"
+                    className="text-sm text-neutral-600 mt-1"
+                    placeholder="Minimální čekání mezi etapami"
+                    initialValue={initialContent[`coop.cards.3.desc`]}
+                  />
                 </div>
               </div>
             </div>

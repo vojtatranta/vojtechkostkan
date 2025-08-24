@@ -98,9 +98,13 @@ export default function EditableContent({
             ref={elRef as any}
             className={
               (className ? className + " " : "") +
-              "rounded-md outline-none ring-0 focus:outline-dashed focus:outline-1 focus:outline-white/60 selection:bg-orange-200/40" +
-              (editHover ? " outline-dashed outline-2 outline-offset-2 outline-orange-400/70" : "") +
-              (focusWithin || dirty ? " ring-2 ring-orange-400/60 ring-offset-2 ring-offset-white" : "")
+              "rounded-md outline-none ring-0 focus:outline-dashed focus:outline-1 focus:outline-orange-300/50 selection:bg-orange-200/30" +
+              (editHover
+                ? " outline-dashed outline-2 outline-offset-2 outline-orange-400/70"
+                : "") +
+              (focusWithin || dirty
+                ? " ring-2 ring-orange-400/60 ring-offset-2 ring-offset-white"
+                : "")
             }
             contentEditable
             suppressContentEditableWarning
@@ -143,18 +147,31 @@ export default function EditableContent({
           {(focusWithin || dirty) && !dismissed && (
             <div
               className={
-                "absolute left-0 top-full z-50 flex items-center gap-2 rounded-md border border-neutral-200 bg-white/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/85 p-2"
+                "absolute left-0 bottom-full mb-2 z-50 flex items-center gap-2 rounded-md border border-neutral-200 bg-white/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/85 p-2"
               }
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={save}
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  save();
+                }}
                 disabled={!dirty || saving}
                 className="rounded bg-black px-3 py-1.5 text-xs text-white disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {saving ? "Ukládám…" : "Uložit"}
               </button>
               <button
-                onClick={discard}
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  discard();
+                }}
                 disabled={!dirty || saving}
                 className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-xs text-black disabled:opacity-40 disabled:cursor-not-allowed"
               >
@@ -165,7 +182,9 @@ export default function EditableContent({
               </span>
               <button
                 type="button"
-                onClick={async () => {
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={async (e) => {
+                  e.stopPropagation();
                   setPinned(false);
                   setDismissed(false);
                   await signOut();
@@ -179,7 +198,9 @@ export default function EditableContent({
                 type="button"
                 aria-label="Skrýt ovládání"
                 title="Skrýt ovládání"
-                onClick={() => {
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
                   setPinned(false);
                   setDismissed(true);
                 }}
@@ -197,7 +218,10 @@ export default function EditableContent({
             className="absolute -right-2 -top-2 z-50 h-7 w-7 rounded-full border border-neutral-200 bg-white/80 backdrop-blur-sm text-neutral-700 shadow-sm hover:bg-white hover:opacity-100 opacity-60 transition-opacity duration-150 flex items-center justify-center"
             onMouseEnter={() => setEditHover(true)}
             onMouseLeave={() => setEditHover(false)}
-            onClick={() => {
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
               const el = elRef.current as HTMLElement | null;
               if (!el) return;
               // Ensure content is initialized
@@ -221,7 +245,12 @@ export default function EditableContent({
             }}
           >
             {/* simple pencil icon */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="h-4 w-4"
+            >
               <path d="M15.586 3.586a2 2 0 0 1 0 2.828l-9 9A2 2 0 0 1 5.172 16H3a1 1 0 0 1-1-1v-2.172a2 2 0 0 1 .586-1.414l9-9a2 2 0 0 1 2.828 0ZM12 5l3 3" />
             </svg>
           </button>
