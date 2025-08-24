@@ -27,6 +27,8 @@ export default function EditableContent({
   const [error, setError] = useState<string | null>(null);
   const [pinned, setPinned] = useState<boolean>(false); // keep toolbar visible while editing
   const [dismissed, setDismissed] = useState<boolean>(false); // user manually hid toolbar
+  const [focusWithin, setFocusWithin] = useState<boolean>(false);
+  const [editHover, setEditHover] = useState<boolean>(false);
 
   const dirty = useMemo(() => value !== serverValue, [value, serverValue]);
 
@@ -87,12 +89,18 @@ export default function EditableContent({
       {!isAuthed ? (
         <Tag className={className}>{value || placeholder}</Tag>
       ) : (
-        <div className="group relative">
+        <div
+          className={"group relative"}
+          onFocus={() => setFocusWithin(true)}
+          onBlur={() => setFocusWithin(false)}
+        >
           <Tag
             ref={elRef as any}
             className={
               (className ? className + " " : "") +
-              "outline-none ring-0 focus:outline-dashed focus:outline-1 focus:outline-white/60 selection:bg-orange-200/40"
+              "rounded-md outline-none ring-0 focus:outline-dashed focus:outline-1 focus:outline-white/60 selection:bg-orange-200/40" +
+              (editHover ? " outline-dashed outline-2 outline-offset-2 outline-orange-400/70" : "") +
+              (focusWithin || dirty ? " ring-2 ring-orange-400/60 ring-offset-2 ring-offset-white" : "")
             }
             contentEditable
             suppressContentEditableWarning
@@ -132,57 +140,91 @@ export default function EditableContent({
             data-editable="true"
           />
 
-          <div
-            className={
-              "absolute left-0 -top-1 -translate-y-full z-50 flex items-center gap-2 rounded-md border border-neutral-200 bg-white/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/85 p-2 transition-opacity duration-150 " +
-              ((pinned || (dirty && !dismissed))
-                ? "opacity-100 pointer-events-auto"
-                : "opacity-0 pointer-events-none") +
-              " group-hover:opacity-100 group-hover:pointer-events-auto focus-within:opacity-100 focus-within:pointer-events-auto"
-            }
+          {(focusWithin || dirty) && !dismissed && (
+            <div
+              className={
+                "absolute left-0 top-full z-50 flex items-center gap-2 rounded-md border border-neutral-200 bg-white/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/85 p-2"
+              }
+            >
+              <button
+                onClick={save}
+                disabled={!dirty || saving}
+                className="rounded bg-black px-3 py-1.5 text-xs text-white disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {saving ? "Ukládám…" : "Uložit"}
+              </button>
+              <button
+                onClick={discard}
+                disabled={!dirty || saving}
+                className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-xs text-black disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Zahodit
+              </button>
+              <span className="ml-2 text-[11px] text-neutral-600">
+                {dirty ? "Neuložené změny" : "Uloženo"}
+              </span>
+              <button
+                type="button"
+                onClick={async () => {
+                  setPinned(false);
+                  setDismissed(false);
+                  await signOut();
+                }}
+                className="ml-2 rounded border border-neutral-300 bg-white px-2.5 py-1 text-[11px] text-neutral-700 hover:bg-neutral-50"
+                title="Odhlásit"
+              >
+                Odhlásit
+              </button>
+              <button
+                type="button"
+                aria-label="Skrýt ovládání"
+                title="Skrýt ovládání"
+                onClick={() => {
+                  setPinned(false);
+                  setDismissed(true);
+                }}
+                className="ml-2 rounded border border-neutral-300 bg-white px-2 py-1 text-[11px] text-neutral-700 hover:bg-neutral-50"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+          {/* Edit trigger button (always visible) */}
+          <button
+            type="button"
+            aria-label="Upravit obsah"
+            title="Upravit obsah"
+            className="absolute -right-2 -top-2 z-50 h-7 w-7 rounded-full border border-neutral-200 bg-white/80 backdrop-blur-sm text-neutral-700 shadow-sm hover:bg-white hover:opacity-100 opacity-60 transition-opacity duration-150 flex items-center justify-center"
+            onMouseEnter={() => setEditHover(true)}
+            onMouseLeave={() => setEditHover(false)}
+            onClick={() => {
+              const el = elRef.current as HTMLElement | null;
+              if (!el) return;
+              // Ensure content is initialized
+              if (el.textContent == null || el.textContent === "") {
+                el.textContent = (serverValue ?? "") || placeholder || "";
+              }
+              // Focus and move caret to end
+              el.focus();
+              try {
+                const sel = window.getSelection();
+                if (sel) {
+                  const range = document.createRange();
+                  range.selectNodeContents(el);
+                  range.collapse(false); // caret at end
+                  sel.removeAllRanges();
+                  sel.addRange(range);
+                }
+              } catch {}
+              setPinned(true);
+              setDismissed(false);
+            }}
           >
-            <button
-              onClick={save}
-              disabled={!dirty || saving}
-              className="rounded bg-black px-3 py-1.5 text-xs text-white disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              {saving ? "Ukládám…" : "Uložit"}
-            </button>
-            <button
-              onClick={discard}
-              disabled={!dirty || saving}
-              className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-xs text-black disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              Zahodit
-            </button>
-            <span className="ml-2 text-[11px] text-neutral-600">
-              {dirty ? "Neuložené změny" : "Uloženo"}
-            </span>
-            <button
-              type="button"
-              onClick={async () => {
-                setPinned(false);
-                setDismissed(true);
-                await signOut();
-              }}
-              className="ml-2 rounded border border-neutral-300 bg-white px-2.5 py-1 text-[11px] text-neutral-700 hover:bg-neutral-50"
-              title="Odhlásit"
-            >
-              Odhlásit
-            </button>
-            <button
-              type="button"
-              aria-label="Skrýt ovládání"
-              title="Skrýt ovládání"
-              onClick={() => {
-                setPinned(false);
-                setDismissed(true);
-              }}
-              className="ml-2 rounded border border-neutral-300 bg-white px-2 py-1 text-[11px] text-neutral-700 hover:bg-neutral-50"
-            >
-              ✕
-            </button>
-          </div>
+            {/* simple pencil icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
+              <path d="M15.586 3.586a2 2 0 0 1 0 2.828l-9 9A2 2 0 0 1 5.172 16H3a1 1 0 0 1-1-1v-2.172a2 2 0 0 1 .586-1.414l9-9a2 2 0 0 1 2.828 0ZM12 5l3 3" />
+            </svg>
+          </button>
           {error && <div className="mt-2 text-xs text-red-600">{error}</div>}
         </div>
       )}
