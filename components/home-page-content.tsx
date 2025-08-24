@@ -12,6 +12,7 @@ import {
   Clock,
   Menu,
   X,
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,7 +30,7 @@ export default function HomePageContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const heroImages = [
-    { title: "Koupelny", image: "/images/bathroom-plumbing-rough-in.webp" },
+    { title: "Rozdělovač vytápění", image: "/images/mechanical-room-heating-manifold.webp" },
     {
       title: "Rozvody vody",
       image: "/images/bathroom-water-supply-rough-in.webp",
@@ -223,10 +224,10 @@ export default function HomePageContent() {
             {/* CTA Button */}
             <div className="hidden md:block">
               <a
-                href={`tel:${CONTACT_PHONE_E164}`}
+                href="#kontakt"
                 className="px-6 py-3 bg-black text-white text-sm font-medium rounded-full hover:bg-neutral-800 transition-colors"
               >
-                Zavolat
+                Poptat
               </a>
             </div>
 
@@ -286,10 +287,10 @@ export default function HomePageContent() {
                   Oblast
                 </a>
                 <a
-                  href={`tel:${CONTACT_PHONE_E164}`}
+                  href="#kontakt"
                   className="bg-black text-white px-4 py-2 rounded-full hover:bg-neutral-800 transition-colors mx-4 text-center text-sm"
                 >
-                  Zavolat
+                  Poptat
                 </a>
               </div>
             </div>
@@ -339,7 +340,7 @@ export default function HomePageContent() {
                   </h1>
                 </div>
 
-                <div className="mt-16">
+                <div className="mt-16 flex gap-3">
                   <button
                     className="px-8 py-4 bg-white text-orange-500 text-sm font-bold rounded-full hover:bg-orange-50 transition-colors shadow-lg"
                     onClick={() =>
@@ -350,6 +351,12 @@ export default function HomePageContent() {
                   >
                     Prohlédnout služby
                   </button>
+                  <a
+                    href="#kontakt"
+                    className="px-8 py-4 border border-white/70 text-white text-sm font-bold rounded-full hover:bg-white/10 transition-colors"
+                  >
+                    Poptat
+                  </a>
                 </div>
               </div>
 
@@ -479,7 +486,67 @@ export default function HomePageContent() {
         </div>
       </section>
 
-      {/* Gallery Section for additional photos */}
+      
+      {/* Contact Section */}
+      <section id="kontakt" className="py-20 px-6 lg:px-12 bg-neutral-50">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl lg:text-6xl font-light text-black mb-8">
+            Kontakt
+          </h2>
+
+          <div className="grid md:grid-cols-4 gap-8 mb-16">
+            <div>
+              <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
+                Telefon
+              </h3>
+              <a
+                href={`tel:${CONTACT_PHONE_E164}`}
+                className="text-xl text-black hover:text-neutral-600 transition-colors"
+              >
+                {CONTACT_PHONE_DISPLAY}
+              </a>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
+                WhatsApp
+              </h3>
+              <a
+                href={`https://wa.me/${CONTACT_PHONE_E164.replace('+', '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-xl text-black hover:text-neutral-600 transition-colors"
+              >
+                <MessageCircle className="w-5 h-5" />
+                {CONTACT_PHONE_DISPLAY}
+              </a>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
+                Email
+              </h3>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="text-xl text-black hover:text-neutral-600 transition-colors"
+              >
+                {CONTACT_EMAIL}
+              </a>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
+                Oblast
+              </h3>
+              <p className="text-xl text-black">Praha a okolí</p>
+            </div>
+          </div>
+
+          <ContactForm />
+        </div>
+      </section>
+
+      {/* Gallery Section for additional photos (moved to last) */}
       <section id="galerie" className="relative py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <h2 className="text-4xl lg:text-6xl font-black text-black mb-12">
@@ -519,50 +586,6 @@ export default function HomePageContent() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="kontakt" className="py-20 px-6 lg:px-12 bg-neutral-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-6xl font-light text-black mb-8">
-            Kontakt
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div>
-              <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
-                Telefon
-              </h3>
-              <a
-                href={`tel:${CONTACT_PHONE_E164}`}
-                className="text-xl text-black hover:text-neutral-600 transition-colors"
-              >
-                {CONTACT_PHONE_DISPLAY}
-              </a>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
-                Email
-              </h3>
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="text-xl text-black hover:text-neutral-600 transition-colors"
-              >
-                {CONTACT_EMAIL}
-              </a>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
-                Oblast
-              </h3>
-              <p className="text-xl text-black">Praha a okolí</p>
-            </div>
-          </div>
-
-          <ContactForm />
         </div>
       </section>
 

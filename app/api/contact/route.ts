@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { CONTACT_FROM, CONTACT_EMAIL } from '@/lib/contact';
+import ContactEmail from '@/emails/ContactEmail';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -24,21 +25,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send email using Resend
+    // Send email using Resend + React Email template
     try {
       await resend.emails.send({
         from: CONTACT_FROM,
         to: CONTACT_EMAIL,
         subject: 'Nová zpráva z kontaktního formuláře',
-        html: `
-          <h2>Nová zpráva z kontaktního formuláře</h2>
-          <p><strong>Email:</strong> ${email || 'Nezadán'}</p>
-          <p><strong>Telefon:</strong> ${phone}</p>
-          <p><strong>Zpráva:</strong></p>
-          <p>${message.replace(/\n/g, '<br>')}</p>
-          <hr>
-          <p><small>Odesláno: ${new Date().toLocaleString('cs-CZ')}</small></p>
-        `,
+        react: ContactEmail({
+          email: email ?? null,
+          phone,
+          message: message ?? '',
+          submittedAt: new Date().toISOString(),
+        }),
       });
 
       console.log('Email sent successfully for contact form submission:', {

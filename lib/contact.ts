@@ -6,4 +6,7 @@ export const CONTACT_PHONE_DISPLAY = process.env.NEXT_PUBLIC_CONTACT_PHONE_DISPL
 export const CONTACT_PHONE_E164 = process.env.NEXT_PUBLIC_CONTACT_PHONE_E164 || '+420123456789';
 
 // Server-side email sender (domain-based mailbox). Do NOT expose privately scoped keys here.
-export const CONTACT_FROM = process.env.CONTACT_FROM || 'kontakt@macaly.dev';
+export const CONTACT_FROM =
+  process.env.APP_FROM_EMAIL ||
+  process.env.CONTACT_FROM ||
+  'info@vojtatranta.cz';
