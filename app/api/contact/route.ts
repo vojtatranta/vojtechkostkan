@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       await resend.emails.send({
         from: CONTACT_FROM,
         to: CONTACT_EMAIL,
-        replyTo: CONTACT_EMAIL,
+        replyTo: email || CONTACT_EMAIL,
         subject: 'Nová zpráva z kontaktního formuláře',
         react: ContactEmail({
           email: email ?? null,
