@@ -178,7 +178,6 @@ export default function HomePageContent() {
               <span className="text-lg font-medium text-black">
                 vojta kostkan
               </span>
-              <span className="text-xs text-neutral-500 ml-1">™</span>
             </div>
 
             {/* Desktop Menu */}
@@ -589,6 +588,60 @@ export default function HomePageContent() {
         </div>
       </section>
 
+      {/* Cooperation Section */}
+      <section id="spoluprace" className="py-24 bg-neutral-100">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl lg:text-6xl font-black text-black mb-4">Spolupráce</h2>
+              <p className="text-neutral-700 text-lg leading-relaxed mb-6">
+                Podle potřeby pracuji v tandemu s kolegou <strong>Járou Kroupou</strong>
+                (také instalatér a topenář). Na zakázkách tak umíme zajistit
+                větší kapacitu a plynulý průběh prací – od koupelen přes rozvody
+                vody až po topení – abyste vše vyřešili na jeden zátah a bez
+                zbytečných prodlev.
+              </p>
+              <div className="flex gap-3">
+                <a
+                  href="https://www.jarakroupa.cz/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 bg-black text-white rounded-full text-sm font-bold hover:bg-neutral-800 transition-colors"
+                >
+                  Web Járy Kroupy
+                </a>
+                <a
+                  href="#kontakt"
+                  className="px-6 py-3 border border-black/10 text-black rounded-full text-sm font-bold hover:bg-black/5 transition-colors"
+                >
+                  Domluvit společnou realizaci
+                </a>
+              </div>
+            </div>
+            <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg border border-neutral-200 bg-white">
+                  <h3 className="text-sm font-semibold text-neutral-800">Voda & Topení</h3>
+                  <p className="text-sm text-neutral-600 mt-1">Instalace, rozvody, rekonstrukce</p>
+                </div>
+                <div className="p-4 rounded-lg border border-neutral-200 bg-white">
+                  <h3 className="text-sm font-semibold text-neutral-800">Dvojice řemeslníků</h3>
+                  <p className="text-sm text-neutral-600 mt-1">Dvě zkušené ruce navíc, rychlejší průběh</p>
+                </div>
+                <div className="p-4 rounded-lg border border-neutral-200 bg-white">
+                  <h3 className="text-sm font-semibold text-neutral-800">Koordinace profesí</h3>
+                  <p className="text-sm text-neutral-600 mt-1">Jedna domluva, plynulý průběh prací</p>
+                </div>
+                <div className="p-4 rounded-lg border border-neutral-200 bg-white">
+                  <h3 className="text-sm font-semibold text-neutral-800">Termíny</h3>
+                  <p className="text-sm text-neutral-600 mt-1">Minimální čekání mezi etapami</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-12 px-6 lg:px-12 bg-black text-white">
         <div className="max-w-7xl mx-auto">
@@ -596,7 +649,6 @@ export default function HomePageContent() {
             <div className="flex items-center">
               <div className="w-6 h-6 bg-white rounded-full mr-2"></div>
               <span className="text-sm font-medium">vojta kostkan</span>
-              <span className="text-xs text-neutral-400 ml-1">™</span>
             </div>
 
             <div className="text-sm text-neutral-400">

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: orange with rounded corners -->
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="#F97316"/>
+
+  <!-- Minimal VK monogram (subtle, rounded) -->
+  <!-- V -->
+  <path d="M168 176 L256 352" stroke="rgba(255,255,255,0.95)" stroke-width="40" stroke-linecap="round"/>
+  <path d="M256 352 L344 176" stroke="rgba(255,255,255,0.95)" stroke-width="40" stroke-linecap="round"/>
+
+  <!-- K -->
+  <line x1="336" y1="176" x2="336" y2="352" stroke="rgba(255,255,255,0.95)" stroke-width="40" stroke-linecap="round"/>
+  <path d="M336 264 L408 184" stroke="rgba(255,255,255,0.95)" stroke-width="40" stroke-linecap="round"/>
+  <path d="M336 264 L408 344" stroke="rgba(255,255,255,0.95)" stroke-width="40" stroke-linecap="round"/>
+</svg>
