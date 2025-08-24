@@ -3,7 +3,6 @@ import Credentials from "next-auth/providers/credentials";
 
 function getAllowedEmails(): Set<string> {
   const list = [
-    process.env.APP_FROM_EMAIL,
     process.env.NEXT_PUBLIC_CONTACT_EMAIL,
     "vojta.tranta@gmail.com",
     ...(process.env.ALLOWED_USERS ? process.env.ALLOWED_USERS.split(",") : []),
@@ -25,7 +24,9 @@ export const authOptions: NextAuthOptions = {
         const email = (creds?.email || "").toLowerCase().trim();
         const password = creds?.password || "";
 
-        const adminEmail = (process.env.APP_FROM_EMAIL || "").toLowerCase().trim();
+        const adminEmail = (process.env.NEXT_PUBLIC_CONTACT_EMAIL || "")
+          .toLowerCase()
+          .trim();
         const adminPass = process.env.ADMIN_PASSWORD || "";
 
         const vojtaEmail = "vojta.tranta@gmail.com";
@@ -60,7 +61,8 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token?.email) session.user = { ...session.user, email: token.email } as any;
+      if (token?.email)
+        session.user = { ...session.user, email: token.email } as any;
       return session;
     },
   },

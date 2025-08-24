@@ -6,10 +6,11 @@ import { authOptions } from "@/lib/auth";
 function allowlist(): Set<string> {
   return new Set(
     [
-      process.env.APP_FROM_EMAIL,
       process.env.NEXT_PUBLIC_CONTACT_EMAIL,
       "vojta.tranta@gmail.com",
-      ...(process.env.ALLOWED_USERS ? process.env.ALLOWED_USERS.split(",") : []),
+      ...(process.env.ALLOWED_USERS
+        ? process.env.ALLOWED_USERS.split(",")
+        : []),
     ]
       .filter(Boolean)
       .map((e) => String(e).toLowerCase().trim())
@@ -49,7 +50,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { key, value } = (await request.json()) as { key?: string; value?: string };
+  const { key, value } = (await request.json()) as {
+    key?: string;
+    value?: string;
+  };
   if (!key || typeof value !== "string") {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
