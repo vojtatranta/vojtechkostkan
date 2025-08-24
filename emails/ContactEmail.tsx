@@ -14,6 +14,7 @@ interface ContactEmailProps {
   phone: string;
   message: string;
   submittedAt?: string;
+  siteDomain?: string;
 }
 
 export default function ContactEmail({
@@ -21,6 +22,7 @@ export default function ContactEmail({
   phone,
   message,
   submittedAt,
+  siteDomain,
 }: ContactEmailProps) {
   const safeMessage = (message || "").split("\n").map((line, idx) => (
     <React.Fragment key={idx}>
@@ -55,7 +57,7 @@ export default function ContactEmail({
 
           <Section>
             <Text style={styles.footer}>
-              Odesláno: {submittedAt || new Date().toLocaleString("cs-CZ")}
+              Odesláno: {submittedAt || new Date().toLocaleString("cs-CZ")} • Web: {siteDomain || 'vojtakostkan.cz'}
             </Text>
           </Section>
         </Container>

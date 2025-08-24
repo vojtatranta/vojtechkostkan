@@ -1,18 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
-import { CONTACT_FROM, CONTACT_EMAIL } from '@/lib/contact';
-import ContactEmail from '@/emails/ContactEmail';
+import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+import { CONTACT_FROM, CONTACT_EMAIL } from "@/lib/contact";
+import ContactEmail from "@/emails/ContactEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
     const { email, phone, message, honeypot } = await request.json();
+    const host = request.headers.get("host") || "vojtakostkan.cz";
 
     // Honeypot spam protection
     if (honeypot) {
       return NextResponse.json(
-        { message: 'Zpráva byla úspěšně odeslána' },
+        { message: "Zpráva byla úspěšně odeslána" },
         { status: 200 }
       );
     }
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
     // Basic validation
     if (!phone || !message) {
       return NextResponse.json(
-        { error: 'Telefon a zpráva jsou povinné' },
+        { error: "Telefon a zpráva jsou povinné" },
         { status: 400 }
       );
     }
@@ -31,41 +32,40 @@ export async function POST(request: NextRequest) {
         from: CONTACT_FROM,
         to: CONTACT_EMAIL,
         replyTo: email || CONTACT_EMAIL,
-        subject: 'Nová zpráva z kontaktního formuláře',
+        subject: `Nová zpráva z kontaktního formuláře – ${host}`,
         react: ContactEmail({
           email: email ?? null,
           phone,
-          message: message ?? '',
+          message: message ?? "",
           submittedAt: new Date().toISOString(),
+          siteDomain: host,
         }),
       });
 
-      console.log('Email sent successfully for contact form submission:', {
+      console.log("Email sent successfully for contact form submission:", {
         email,
         phone,
         timestamp: new Date().toISOString(),
       });
 
       return NextResponse.json(
-        { message: 'Zpráva byla úspěšně odeslána' },
+        { message: "Zpráva byla úspěšně odeslána" },
         { status: 200 }
       );
-
     } catch (emailError) {
-      console.error('Failed to send email:', emailError);
-      
+      console.error("Failed to send email:", emailError);
+
       // Still return success to user, but log the error
       // In production, you might want to save to database as fallback
       return NextResponse.json(
-        { message: 'Zpráva byla úspěšně odeslána' },
+        { message: "Zpráva byla úspěšně odeslána" },
         { status: 200 }
       );
     }
-
   } catch (error) {
-    console.error('Contact form error:', error);
+    console.error("Contact form error:", error);
     return NextResponse.json(
-      { error: 'Došlo k chybě při odesílání zprávy' },
+      { error: "Došlo k chybě při odesílání zprávy" },
       { status: 500 }
     );
   }
