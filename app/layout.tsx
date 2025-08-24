@@ -18,10 +18,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "vojta kostkan | Instalatér & Topenář Praha",
+  title: "Vojtěch Kostkan | Instalatér & Topenář Praha",
   description:
     "Instalatérské a topenářské práce v Praze a okolí. Koupelny, rozvody vody, topení a rekonstrukce.",
-  metadataBase: new URL("https://vojtakostkan.cz"),
+  metadataBase: new URL("https://vojtechkostkan.cz"),
   keywords: [
     "instalatér Praha",
     "topenář Praha",
@@ -33,28 +33,28 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Vojtěch Kostkan" }],
   alternates: {
-    canonical: "https://vojtakostkan.cz/",
+    canonical: "https://vojtechkostkan.cz/",
   },
   openGraph: {
     type: "website",
-    title: "Vojta Kostkan – Instalatér & Topenář Praha",
+    title: "Vojtěch Kostkan – Instalatér & Topenář Praha",
     description:
       "Instalatérské a topenářské práce v Praze a okolí. Koupelny, rozvody vody, topení a rekonstrukce.",
-    url: "https://vojtakostkan.cz/",
+    url: "https://vojtechkostkan.cz/",
     locale: "cs_CZ",
-    siteName: "Vojta Kostkan",
+    siteName: "Vojtěch Kostkan",
     images: [
       {
         url: "/images/interior-renovation-copper-pipes-room.webp",
         width: 1200,
         height: 630,
-        alt: "Instalatér & Topenář Praha – Vojta Kostkan",
+        alt: "Instalatér & Topenář Praha – Vojtěch Kostkan",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vojta Kostkan – Instalatér & Topenář Praha",
+    title: "Vojtěch Kostkan – Instalatér & Topenář Praha",
     description:
       "Instalatérské a topenářské práce v Praze a okolí. Koupelny, rozvody vody, topení a rekonstrukce.",
     images: ["/images/interior-renovation-copper-pipes-room.webp"],
@@ -119,3 +119,4 @@ export default function RootLayout({
     </html>
   );
 }
+

@@ -1,7 +1,7 @@
 import LoginForm from "@/components/auth/login-form";
 
 export const metadata = {
-  title: "Přihlášení | vojta kostkan",
+  title: "Přihlášení | Vojtěch Kostkan",
 };
 
 export default function LoginPage() {

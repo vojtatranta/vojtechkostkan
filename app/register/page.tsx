@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Registrace | vojta kostkan",
+  title: "Registrace | Vojtěch Kostkan",
 };
 
 export default function RegisterPage() {

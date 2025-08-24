@@ -7,8 +7,8 @@ export const metadata: Metadata = siteMetadata['/omne']
 
 export default function AboutPage() {
   const photos = [
-    { src: '/images/vojta-kostkan-elevator-carrying-tools.webp', alt: 'Vojta Kostkan – v terénu s nářadím' },
-    { src: '/images/vojta-kostkan-copper-pipe-brazing-in-ceiling.webp', alt: 'Vojta Kostkan – pájení mědi' },
+    { src: '/images/vojta-kostkan-elevator-carrying-tools.webp', alt: 'Vojtěch Kostkan – v terénu s nářadím' },
+    { src: '/images/vojta-kostkan-copper-pipe-brazing-in-ceiling.webp', alt: 'Vojtěch Kostkan – pájení mědi' },
     { src: '/images/F2D8B393-67FA-45CE-A278-C9530F951226.webp', alt: 'Strojovna – izolované potrubí' },
     { src: '/images/F7FAE785-2C91-4014-A140-7238811AB8F7.webp', alt: 'Detail armatury' },
   ]

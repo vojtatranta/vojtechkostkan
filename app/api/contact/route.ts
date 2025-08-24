@@ -8,7 +8,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: NextRequest) {
   try {
     const { email, phone, message, honeypot } = await request.json();
-    const host = request.headers.get("host") || "vojtakostkan.cz";
+    const host = request.headers.get("host") || "vojtechkostkan.cz";
 
     // Honeypot spam protection
     if (honeypot) {

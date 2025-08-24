@@ -57,7 +57,7 @@ export default function ContactEmail({
 
           <Section>
             <Text style={styles.footer}>
-              Odesláno: {submittedAt || new Date().toLocaleString("cs-CZ")} • Web: {siteDomain || 'vojtakostkan.cz'}
+              Odesláno: {submittedAt || new Date().toLocaleString("cs-CZ")} • Web: {siteDomain || 'vojtechkostkan.cz'}
             </Text>
           </Section>
         </Container>

@@ -30,7 +30,7 @@ export default function HomePageContent({
             <div className="flex items-center">
               <div className="w-8 h-8 bg-black rounded-full mr-3"></div>
               <span className="text-lg font-medium text-black">
-                vojta kostkan
+                Vojtěch Kostkan
               </span>
             </div>
 
@@ -223,7 +223,7 @@ export default function HomePageContent({
               <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-lg">
                 <Image
                   src="/images/vojta-kostkan-elevator-carrying-tools.webp"
-                  alt="Vojta Kostkan v terénu"
+                  alt="Vojtěch Kostkan v terénu"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -232,7 +232,7 @@ export default function HomePageContent({
               <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-lg translate-y-6">
                 <Image
                   src="/images/vojta-kostkan-copper-pipe-brazing-in-ceiling.webp"
-                  alt="Vojta Kostkan – pájení mědi"
+                  alt="Vojtěch Kostkan – pájení mědi"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -399,7 +399,7 @@ export default function HomePageContent({
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <div className="w-6 h-6 bg-white rounded-full mr-2"></div>
-              <span className="text-sm font-medium">vojta kostkan</span>
+              <span className="text-sm font-medium">Vojtěch Kostkan</span>
             </div>
 
             <div className="text-sm text-neutral-400">

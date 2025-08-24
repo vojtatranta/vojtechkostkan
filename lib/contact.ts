@@ -9,4 +9,4 @@ export const CONTACT_PHONE_E164 = process.env.NEXT_PUBLIC_CONTACT_PHONE_E164 || 
 export const CONTACT_FROM =
   process.env.APP_FROM_EMAIL ||
   process.env.CONTACT_FROM ||
-  'info@vojtatranta.cz';
+  'info@vojtechkostkan.cz';
