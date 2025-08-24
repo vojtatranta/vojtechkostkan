@@ -29,6 +29,7 @@ function kvConfigured() {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const key = searchParams.get("key");
+  const locale = (searchParams.get("locale") || "cs").toLowerCase();
   if (!key) return NextResponse.json({ error: "Missing key" }, { status: 400 });
 
   try {
@@ -36,8 +37,16 @@ export async function GET(request: NextRequest) {
       // When KV isn't configured, return null so the UI can still render placeholders
       return NextResponse.json({ value: null });
     }
-    const value = await kv.get<string>(`content:${key}`);
-    return NextResponse.json({ value: value ?? null });
+    if (locale === "cs") {
+      const value = await kv.get<string>(`content:${key}`);
+      return NextResponse.json({ value: value ?? null });
+    } else {
+      // Try prefixed first, fallback to default
+      const pref = await kv.get<string>(`content:${locale}:${key}`);
+      if (pref != null) return NextResponse.json({ value: pref });
+      const def = await kv.get<string>(`content:${key}`);
+      return NextResponse.json({ value: def ?? null });
+    }
   } catch (e) {
     return NextResponse.json({ error: "KV read error" }, { status: 500 });
   }
@@ -50,9 +59,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { key, value } = (await request.json()) as {
+  const { key, value, locale } = (await request.json()) as {
     key?: string;
     value?: string;
+    locale?: string;
   };
   if (!key || typeof value !== "string") {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
@@ -68,7 +78,9 @@ export async function POST(request: NextRequest) {
         { status: 503 }
       );
     }
-    await kv.set(`content:${key}`, value);
+    const loc = (locale || "cs").toLowerCase();
+    const kvKey = loc === "cs" ? `content:${key}` : `content:${loc}:${key}`;
+    await kv.set(kvKey, value);
     return NextResponse.json({ ok: true });
   } catch (e) {
     return NextResponse.json({ error: "KV write error" }, { status: 500 });

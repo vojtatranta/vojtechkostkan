@@ -1,28 +1,81 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useLang } from "@/components/lang-context";
 
 type EditableContentProps = {
   id: string; // unique id of the content block
   placeholder?: string;
+  placeholderByLocale?: { cs?: string; en?: string };
   as?: "p" | "h1" | "h2" | "h3" | "div" | "span";
   className?: string;
   initialValue?: string; // optional server-provided initial value to SSR without flash
+  initialValueByLocale?: Partial<Record<string, string>>; // optional map of locale -> initial value
 };
 
 export default function EditableContent({
   id,
   placeholder = "",
+  placeholderByLocale,
   as = "div",
   className,
   initialValue,
+  initialValueByLocale,
 }: EditableContentProps) {
   const { data: session, status } = useSession();
   const isAuthed = !!session?.user?.email;
+  const { locale } = useLang();
+  const router = useRouter();
 
-  const [value, setValue] = useState<string>(initialValue ?? "");
-  const [serverValue, setServerValue] = useState<string>(initialValue ?? "");
+  const t = useMemo(
+    () =>
+      locale === "cs"
+        ? {
+            editTitle:
+              "Klikněte pro úpravu. Změny uložte tlačítkem Uložit.",
+            editBtnAria: "Upravit obsah",
+            save: "Uložit",
+            discard: "Zahodit",
+            signOut: "Odhlásit",
+            statusDirty: "Neuložené změny",
+            statusSaved: "Uloženo",
+            hideControlsTitle: "Skrýt ovládání",
+          }
+        : {
+            editTitle:
+              "Click to edit. Save your changes with the Save button.",
+            editBtnAria: "Edit content",
+            save: "Save",
+            discard: "Discard",
+            signOut: "Sign out",
+            statusDirty: "Unsaved changes",
+            statusSaved: "Saved",
+            hideControlsTitle: "Hide controls",
+          },
+    [locale]
+  );
+
+  // Pick the effective initial based on current locale.
+  // If a per-locale map is provided, do NOT fall back to generic initialValue to avoid mixing locales.
+  const effectiveInitial = useMemo(() => {
+    if (initialValueByLocale) {
+      const v = initialValueByLocale[locale];
+      return v ?? ""; // show placeholder when missing translation
+    }
+    return initialValue ?? "";
+  }, [initialValueByLocale, initialValue, locale]);
+
+  const effectivePlaceholder = useMemo(() => {
+    if (placeholderByLocale) {
+      return placeholderByLocale[locale] ?? placeholder ?? "";
+    }
+    return placeholder ?? "";
+  }, [placeholderByLocale, placeholder, locale]);
+
+  const [value, setValue] = useState<string>(effectiveInitial);
+  const [serverValue, setServerValue] = useState<string>(effectiveInitial);
   const [saving, setSaving] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [pinned, setPinned] = useState<boolean>(false); // keep toolbar visible while editing
@@ -35,18 +88,30 @@ export default function EditableContent({
   // Ref to control the contentEditable element without React clobbering selection
   const elRef = useRef<HTMLElement | null>(null);
 
-  // Initialize the editable DOM content when switching to edit mode or when key changes
+  // Reset state when id, locale, or provided initial values change
+  useEffect(() => {
+    setValue(effectiveInitial);
+    setServerValue(effectiveInitial);
+    const el = elRef.current;
+    if (el) {
+      const initial = effectiveInitial || effectivePlaceholder || "";
+      if (el.textContent !== initial) {
+        el.textContent = initial;
+      }
+    }
+  }, [id, locale, effectiveInitial, effectivePlaceholder]);
+
+  // Initialize the editable DOM content when switching auth state (mount) to avoid flashes
   useEffect(() => {
     if (!isAuthed) return;
     const el = elRef.current;
     if (!el) return;
-    // Only set initial content when mounting/changing id/auth, not on every keystroke
-    const initial = (serverValue ?? "") || placeholder || "";
+    const initial = (serverValue ?? "") || effectivePlaceholder || "";
     if (el.textContent !== initial) {
       el.textContent = initial;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, isAuthed]);
+  }, [isAuthed]);
 
   const save = async () => {
     setSaving(true);
@@ -55,7 +120,7 @@ export default function EditableContent({
       const res = await fetch("/api/content", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key: id, value }),
+        body: JSON.stringify({ key: id, value, locale }),
       });
       if (!res.ok) {
         const j = await res.json().catch(() => ({}));
@@ -76,7 +141,7 @@ export default function EditableContent({
     // Reflect the reverted value into the contentEditable element immediately
     const el = elRef.current;
     if (el) {
-      el.textContent = (serverValue ?? "") || placeholder || "";
+      el.textContent = (serverValue ?? "") || effectivePlaceholder || "";
     }
     setPinned(false);
     setDismissed(false);
@@ -87,7 +152,7 @@ export default function EditableContent({
   return (
     <div>
       {!isAuthed ? (
-        <Tag className={className}>{value || placeholder}</Tag>
+        <Tag className={className}>{value || effectivePlaceholder}</Tag>
       ) : (
         <div
           className={"group relative"}
@@ -109,7 +174,7 @@ export default function EditableContent({
             contentEditable
             suppressContentEditableWarning
             spellCheck={false}
-            title="Klikněte pro úpravu. Změny uložte tlačítkem Uložit."
+            title={t.editTitle}
             onInput={(e: React.FormEvent<HTMLElement>) => {
               // Do not trim while typing to avoid caret jumps
               setValue(e.currentTarget.textContent || "");
@@ -154,7 +219,7 @@ export default function EditableContent({
                 e.stopPropagation();
               }}
               onClick={(e) => e.stopPropagation()}
-            >
+              >
               <button
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={(e) => {
@@ -164,7 +229,7 @@ export default function EditableContent({
                 disabled={!dirty || saving}
                 className="rounded bg-black px-3 py-1.5 text-xs text-white disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {saving ? "Ukládám…" : "Uložit"}
+                {saving ? "Saving…" : t.save}
               </button>
               <button
                 onMouseDown={(e) => e.stopPropagation()}
@@ -175,10 +240,10 @@ export default function EditableContent({
                 disabled={!dirty || saving}
                 className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-xs text-black disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Zahodit
+                {t.discard}
               </button>
               <span className="ml-2 text-[11px] text-neutral-600">
-                {dirty ? "Neuložené změny" : "Uloženo"}
+                {dirty ? t.statusDirty : t.statusSaved}
               </span>
               <button
                 type="button"
@@ -187,17 +252,23 @@ export default function EditableContent({
                   e.stopPropagation();
                   setPinned(false);
                   setDismissed(false);
-                  await signOut();
+                  try {
+                    await signOut({ redirect: false });
+                  } finally {
+                    const target = locale === "en" ? "/en" : "/";
+                    router.replace(target);
+                    router.refresh();
+                  }
                 }}
                 className="ml-2 rounded border border-neutral-300 bg-white px-2.5 py-1 text-[11px] text-neutral-700 hover:bg-neutral-50"
-                title="Odhlásit"
+                title={t.signOut}
               >
-                Odhlásit
+                {t.signOut}
               </button>
               <button
                 type="button"
-                aria-label="Skrýt ovládání"
-                title="Skrýt ovládání"
+                aria-label={t.hideControlsTitle}
+                title={t.hideControlsTitle}
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -213,8 +284,8 @@ export default function EditableContent({
           {/* Edit trigger button (always visible) */}
           <button
             type="button"
-            aria-label="Upravit obsah"
-            title="Upravit obsah"
+            aria-label={t.editBtnAria}
+            title={t.editBtnAria}
             className="absolute -right-2 -top-2 z-50 h-7 w-7 rounded-full border border-neutral-200 bg-white/80 backdrop-blur-sm text-neutral-700 shadow-sm hover:bg-white hover:opacity-100 opacity-60 transition-opacity duration-150 flex items-center justify-center"
             onMouseEnter={() => setEditHover(true)}
             onMouseLeave={() => setEditHover(false)}
@@ -226,7 +297,7 @@ export default function EditableContent({
               if (!el) return;
               // Ensure content is initialized
               if (el.textContent == null || el.textContent === "") {
-                el.textContent = (serverValue ?? "") || placeholder || "";
+                el.textContent = (serverValue ?? "") || effectivePlaceholder || "";
               }
               // Focus and move caret to end
               el.focus();

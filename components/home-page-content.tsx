@@ -6,6 +6,7 @@ import Gallery from "@/components/gallery";
 import HeroImages from "@/components/hero-images";
 import ServicesSection from "@/components/services-section";
 import MobileNav from "@/components/mobile-nav";
+import LangText from "@/components/LangText";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE_DISPLAY,
@@ -15,11 +16,19 @@ import {
 
 type HomePageContentProps = {
   initialContent?: Record<string, string | undefined>;
+  initialContentCs?: Record<string, string | undefined>;
+  initialContentEn?: Record<string, string | undefined>;
 };
 
 export default function HomePageContent({
   initialContent = {},
+  initialContentCs,
+  initialContentEn,
 }: HomePageContentProps) {
+  const getByLoc = (id: string) => ({
+    cs: initialContentCs?.[id],
+    en: initialContentEn?.[id],
+  });
   return (
     <div className="min-h-screen bg-neutral-100">
       {/* Navigation */}
@@ -40,31 +49,31 @@ export default function HomePageContent({
                 href="#sluzby"
                 className="px-4 py-2 bg-black text-white text-sm font-medium hover:bg-neutral-800 transition-colors"
               >
-                Služby
+                <LangText cs="Služby" en="Services" />
               </a>
               <a
                 href="#omne"
                 className="text-neutral-600 hover:text-black transition-colors text-sm"
               >
-                O mně
+                <LangText cs="O mně" en="About" />
               </a>
               <a
                 href="#koupelny"
                 className="text-neutral-600 hover:text-black transition-colors text-sm"
               >
-                Koupelny
+                <LangText cs="Koupelny" en="Bathrooms" />
               </a>
               <a
                 href="#topeni"
                 className="text-neutral-600 hover:text-black transition-colors text-sm"
               >
-                Topení
+                <LangText cs="Topení" en="Heating" />
               </a>
               <a
                 href="#kontakt"
                 className="text-neutral-600 hover:text-black transition-colors text-sm"
               >
-                Kontakt
+                <LangText cs="Kontakt" en="Contact" />
               </a>
               {/* <a
                 href="#oblast"
@@ -80,7 +89,7 @@ export default function HomePageContent({
                 href="#kontakt"
                 className="px-6 py-3 bg-black text-white text-sm font-medium rounded-full hover:bg-neutral-800 transition-colors"
               >
-                Poptat
+                <LangText cs="Poptat" en="Request quote" />
               </a>
             </div>
 
@@ -110,7 +119,10 @@ export default function HomePageContent({
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div>
                 <p className="text-sm text-orange-200 mb-8 tracking-wide uppercase font-medium">
-                  Potřebujete? Vyřešíme to
+                  <LangText
+                    cs="Potřebujete? Vyřešíme to"
+                    en="Need help? We'll handle it"
+                  />
                 </p>
 
                 <div className="space-y-2">
@@ -119,35 +131,54 @@ export default function HomePageContent({
                     as="h1"
                     className="text-6xl lg:text-8xl font-black text-white leading-none tracking-tight"
                     placeholder="instalace"
+                    placeholderByLocale={{
+                      cs: "instalace",
+                      en: "installation",
+                    }}
                     initialValue={initialContent["hero.title1"]}
+                    initialValueByLocale={getByLoc("hero.title1")}
                   />
                   <EditableContent
                     id="hero.title2"
-                    as="h1"
+                    as="p"
                     className="text-6xl lg:text-8xl font-black text-white leading-none tracking-tight"
                     placeholder="topení"
+                    placeholderByLocale={{ cs: "topení", en: "heating" }}
                     initialValue={initialContent["hero.title2"]}
+                    initialValueByLocale={getByLoc("hero.title2")}
                   />
                   <EditableContent
                     id="hero.title3"
-                    as="h1"
+                    as="p"
                     className="text-6xl lg:text-8xl font-light text-orange-200 leading-none tracking-tight"
                     placeholder="koupelny"
+                    placeholderByLocale={{ cs: "koupelny", en: "bathrooms" }}
                     initialValue={initialContent["hero.title3"]}
+                    initialValueByLocale={getByLoc("hero.title3")}
                   />
                   <EditableContent
                     id="hero.title4"
-                    as="h1"
+                    as="p"
                     className="text-6xl lg:text-8xl font-light text-orange-200/80 leading-none tracking-tight"
                     placeholder="rozvody vody"
+                    placeholderByLocale={{
+                      cs: "rozvody vody",
+                      en: "water distribution",
+                    }}
                     initialValue={initialContent["hero.title4"]}
+                    initialValueByLocale={getByLoc("hero.title4")}
                   />
                   <EditableContent
                     id="hero.title5"
-                    as="h1"
+                    as="p"
                     className="text-6xl lg:text-8xl font-light text-orange-300/60 leading-none tracking-tight"
                     placeholder="rekonstrukce"
+                    placeholderByLocale={{
+                      cs: "rekonstrukce",
+                      en: "renovations",
+                    }}
                     initialValue={initialContent["hero.title5"]}
+                    initialValueByLocale={getByLoc("hero.title5")}
                   />
                 </div>
 
@@ -156,19 +187,23 @@ export default function HomePageContent({
                     href="#sluzby"
                     className="px-8 py-4 bg-white text-orange-500 text-sm font-bold rounded-full hover:bg-orange-50 transition-colors shadow-lg"
                   >
-                    Prohlédnout služby
+                    <LangText cs="Prohlédnout služby" en="View services" />
                   </a>
                   <a
                     href="#kontakt"
                     className="px-8 py-4 border border-white/70 text-white text-sm font-bold rounded-full hover:bg-white/10 transition-colors"
                   >
-                    Poptat
+                    <LangText cs="Poptat" en="Request quote" />
                   </a>
                 </div>
               </div>
 
               <div className="relative">
-                <HeroImages initialContent={initialContent} />
+                <HeroImages
+                  initialContent={initialContent}
+                  initialContentCs={initialContentCs}
+                  initialContentEn={initialContentEn}
+                />
               </div>
             </div>
           </div>
@@ -176,7 +211,11 @@ export default function HomePageContent({
       </section>
 
       {/* Services Section (component with editable content) */}
-      <ServicesSection initialContent={initialContent} />
+      <ServicesSection
+        initialContent={initialContent}
+        initialContentCs={initialContentCs}
+        initialContentEn={initialContentEn}
+      />
 
       {/* About Me Section (orange) */}
       <section
@@ -195,27 +234,34 @@ export default function HomePageContent({
                 as="h2"
                 className="text-4xl lg:text-6xl font-black mb-4"
                 placeholder="O mně"
+                placeholderByLocale={{ cs: "O mně", en: "About me" }}
                 initialValue={initialContent["about.title"]}
+                initialValueByLocale={getByLoc("about.title")}
               />
               <EditableContent
                 id="about.lead"
                 as="p"
                 className="text-orange-50/90 text-lg leading-relaxed mb-6"
                 placeholder={`Jsem ${OWNER_NAME}. Dělám instalace vody, topení a rekonstrukce koupelen v Praze a okolí. Držím se jednoduchosti, přesnosti a čistého provedení. Vždy vysvětlím možnosti a doporučím řešení, které dává smysl pro váš prostor i rozpočet.`}
+                placeholderByLocale={{
+                  cs: `Jsem ${OWNER_NAME}. Dělám instalace vody, topení a rekonstrukce koupelen v Praze a okolí. Držím se jednoduchosti, přesnosti a čistého provedení. Vždy vysvětlím možnosti a doporučím řešení, které dává smysl pro váš prostor i rozpočet.`,
+                  en: `I am ${OWNER_NAME}. I do water installation, heating and bathroom renovations in Prague and nearby. I keep things simple, precise and clean. I always explain the options and recommend solutions that make sense for your space and budget.`,
+                }}
                 initialValue={initialContent["about.lead"]}
+                initialValueByLocale={getByLoc("about.lead")}
               />
               <div className="flex gap-3">
                 <a
                   href="#kontakt"
                   className="px-6 py-3 bg-white text-orange-600 rounded-full text-sm font-bold hover:bg-orange-50 transition-colors"
                 >
-                  Kontakt
+                  <LangText cs="Kontakt" en="Contact" />
                 </a>
                 <a
                   href="#sluzby"
                   className="px-6 py-3 border border-white/40 text-white rounded-full text-sm font-bold hover:bg-white/10 transition-colors"
                 >
-                  Služby
+                  <LangText cs="Služby" en="Services" />
                 </a>
               </div>
             </div>
@@ -251,13 +297,15 @@ export default function HomePageContent({
             as="h2"
             className="text-4xl lg:text-6xl font-light text-black mb-8"
             placeholder="Kontakt"
+            placeholderByLocale={{ cs: "Kontakt", en: "Contact" }}
             initialValue={initialContent["contact.title"]}
+            initialValueByLocale={getByLoc("contact.title")}
           />
 
           <div className="grid md:grid-cols-4 gap-8 mb-16">
             <div>
               <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
-                Telefon
+                <LangText cs="Telefon" en="Phone" />
               </h3>
               <a
                 href={`tel:${CONTACT_PHONE_E164}`}
@@ -296,24 +344,37 @@ export default function HomePageContent({
 
             <div>
               <h3 className="text-sm font-medium text-neutral-500 mb-2 uppercase tracking-wide">
-                Oblast
+                <LangText cs="Oblast" en="Area" />
               </h3>
               <EditableContent
                 id="contact.area"
                 as="p"
                 className="text-xl text-black"
                 placeholder="Praha a okolí"
+                placeholderByLocale={{
+                  cs: "Praha a okolí",
+                  en: "Prague and nearby",
+                }}
                 initialValue={initialContent["contact.area"]}
+                initialValueByLocale={getByLoc("contact.area")}
               />
             </div>
           </div>
 
-          <ContactForm initialContent={initialContent} />
+          <ContactForm
+            initialContent={initialContent}
+            initialContentCs={initialContentCs}
+            initialContentEn={initialContentEn}
+          />
         </div>
       </section>
 
       {/* Gallery Section (server component with editable captions) */}
-      <Gallery initialContent={initialContent} />
+      <Gallery
+        initialContent={initialContent}
+        initialContentCs={initialContentCs}
+        initialContentEn={initialContentEn}
+      />
 
       {/* Cooperation Section */}
       <section id="spoluprace" className="py-24 bg-neutral-100">
@@ -325,7 +386,9 @@ export default function HomePageContent({
                 as="h2"
                 className="text-4xl lg:text-6xl font-black text-black mb-4"
                 placeholder="Spolupráce"
+                placeholderByLocale={{ cs: "Spolupráce", en: "Cooperation" }}
                 initialValue={initialContent["coop.title"]}
+                initialValueByLocale={getByLoc("coop.title")}
               />
               <EditableContent
                 id="coop.lead"
@@ -334,7 +397,12 @@ export default function HomePageContent({
                 placeholder={
                   "Podle potřeby pracuji v tandemu s kolegou Járou Kroupou (také instalatér a topenář). Na zakázkách tak umíme zajistit větší kapacitu a plynulý průběh prací – od koupelen přes rozvody vody až po topení – abyste vše vyřešili na jeden zátah a bez zbytečných prodlev."
                 }
+                placeholderByLocale={{
+                  cs: "Podle potřeby pracuji v tandemu s kolegou Járou Kroupou (také instalatér a topenář). Na zakázkách tak umíme zajistit větší kapacitu a plynulý průběh prací – od koupelen přes rozvody vody až po topení – abyste vše vyřešili na jeden zátah a bez zbytečných prodlev.",
+                  en: "When needed, I work in tandem with my colleague Jára Kroupa (also a plumber and heating specialist). This lets us provide more capacity and a smooth workflow on projects — from bathrooms to water distribution to heating — so you can get everything done in one go without unnecessary delays.",
+                }}
                 initialValue={initialContent["coop.lead"]}
+                initialValueByLocale={getByLoc("coop.lead")}
               />
               <div className="flex gap-3">
                 <a
@@ -343,13 +411,16 @@ export default function HomePageContent({
                   rel="noopener noreferrer"
                   className="px-6 py-3 bg-black text-white rounded-full text-sm font-bold hover:bg-neutral-800 transition-colors"
                 >
-                  Web Járy Kroupy
+                  <LangText cs="Web Járy Kroupy" en="Jára Kroupa website" />
                 </a>
                 <a
                   href="#kontakt"
                   className="px-6 py-3 border border-black/10 text-black rounded-full text-sm font-bold hover:bg-black/5 transition-colors"
                 >
-                  Domluvit společnou realizaci
+                  <LangText
+                    cs="Domluvit společnou realizaci"
+                    en="Arrange a joint project"
+                  />
                 </a>
               </div>
             </div>
@@ -361,14 +432,24 @@ export default function HomePageContent({
                     as="h3"
                     className="text-sm font-semibold text-neutral-800"
                     placeholder="Voda & Topení"
+                    placeholderByLocale={{
+                      cs: "Voda & Topení",
+                      en: "Water & Heating",
+                    }}
                     initialValue={initialContent[`coop.cards.0.title`]}
+                    initialValueByLocale={getByLoc(`coop.cards.0.title`)}
                   />
                   <EditableContent
                     id={`coop.cards.0.desc`}
                     as="p"
                     className="text-sm text-neutral-600 mt-1"
                     placeholder="Instalace, rozvody, rekonstrukce"
+                    placeholderByLocale={{
+                      cs: "Instalace, rozvody, rekonstrukce",
+                      en: "Installation, distribution, renovations",
+                    }}
                     initialValue={initialContent[`coop.cards.0.desc`]}
+                    initialValueByLocale={getByLoc(`coop.cards.0.desc`)}
                   />
                 </div>
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
@@ -377,14 +458,24 @@ export default function HomePageContent({
                     as="h3"
                     className="text-sm font-semibold text-neutral-800"
                     placeholder="Dvojice řemeslníků"
+                    placeholderByLocale={{
+                      cs: "Dvojice řemeslníků",
+                      en: "Two tradesmen",
+                    }}
                     initialValue={initialContent[`coop.cards.1.title`]}
+                    initialValueByLocale={getByLoc(`coop.cards.1.title`)}
                   />
                   <EditableContent
                     id={`coop.cards.1.desc`}
                     as="p"
                     className="text-sm text-neutral-600 mt-1"
                     placeholder="Dvě zkušené ruce navíc, rychlejší průběh"
+                    placeholderByLocale={{
+                      cs: "Dvě zkušené ruce navíc, rychlejší průběh",
+                      en: "An extra pair of skilled hands, faster progress",
+                    }}
                     initialValue={initialContent[`coop.cards.1.desc`]}
+                    initialValueByLocale={getByLoc(`coop.cards.1.desc`)}
                   />
                 </div>
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
@@ -393,14 +484,24 @@ export default function HomePageContent({
                     as="h3"
                     className="text-sm font-semibold text-neutral-800"
                     placeholder="Koordinace profesí"
+                    placeholderByLocale={{
+                      cs: "Koordinace profesí",
+                      en: "Coordination of trades",
+                    }}
                     initialValue={initialContent[`coop.cards.2.title`]}
+                    initialValueByLocale={getByLoc(`coop.cards.2.title`)}
                   />
                   <EditableContent
                     id={`coop.cards.2.desc`}
                     as="p"
                     className="text-sm text-neutral-600 mt-1"
                     placeholder="Jedna domluva, plynulý průběh prací"
+                    placeholderByLocale={{
+                      cs: "Jedna domluva, plynulý průběh prací",
+                      en: "One agreement, smooth workflow",
+                    }}
                     initialValue={initialContent[`coop.cards.2.desc`]}
+                    initialValueByLocale={getByLoc(`coop.cards.2.desc`)}
                   />
                 </div>
                 <div className="p-4 rounded-lg border border-neutral-200 bg-white">
@@ -409,14 +510,21 @@ export default function HomePageContent({
                     as="h3"
                     className="text-sm font-semibold text-neutral-800"
                     placeholder="Termíny"
+                    placeholderByLocale={{ cs: "Termíny", en: "Timelines" }}
                     initialValue={initialContent[`coop.cards.3.title`]}
+                    initialValueByLocale={getByLoc(`coop.cards.3.title`)}
                   />
                   <EditableContent
                     id={`coop.cards.3.desc`}
                     as="p"
                     className="text-sm text-neutral-600 mt-1"
                     placeholder="Minimální čekání mezi etapami"
+                    placeholderByLocale={{
+                      cs: "Minimální čekání mezi etapami",
+                      en: "Minimal waiting between stages",
+                    }}
                     initialValue={initialContent[`coop.cards.3.desc`]}
+                    initialValueByLocale={getByLoc(`coop.cards.3.desc`)}
                   />
                 </div>
               </div>

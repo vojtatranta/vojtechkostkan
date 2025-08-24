@@ -2,6 +2,8 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import Script from "next/script";
+import Link from "next/link";
+import RootLangSwitcher from "@/components/root-lang-switcher";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
@@ -78,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="cs">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -98,6 +100,7 @@ export default function RootLayout({
         <AuthSessionProvider>
           <ConvexClientProvider>
             {children}
+            <RootLangSwitcher />
             <footer className="mx-auto w-full max-w-6xl px-4 py-10 text-center text-xs text-neutral-500">
               <div className="flex items-center justify-center gap-4">
                 <a href="/login" className="underline hover:text-neutral-700">
@@ -119,4 +122,3 @@ export default function RootLayout({
     </html>
   );
 }
-

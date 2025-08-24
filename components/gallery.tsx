@@ -3,9 +3,12 @@ import EditableContent from "@/components/editable-content";
 
 type GalleryProps = {
   initialContent?: Record<string, string | undefined>;
+  initialContentCs?: Record<string, string | undefined>;
+  initialContentEn?: Record<string, string | undefined>;
 };
 
-export default function Gallery({ initialContent = {} }: GalleryProps) {
+export default function Gallery({ initialContent = {}, initialContentCs, initialContentEn }: GalleryProps) {
+  const byLoc = (id: string) => ({ cs: initialContentCs?.[id], en: initialContentEn?.[id] });
   return (
     <section id="galerie" className="relative py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -14,14 +17,18 @@ export default function Gallery({ initialContent = {} }: GalleryProps) {
           as="h2"
           className="text-4xl lg:text-6xl font-black text-black mb-12"
           placeholder="Galerie"
+          placeholderByLocale={{ cs: "Galerie", en: "Gallery" }}
           initialValue={initialContent["gallery.title"]}
+          initialValueByLocale={byLoc("gallery.title")}
         />
         <EditableContent
           id="gallery.intro"
           as="p"
           className="text-neutral-600 mb-8 max-w-3xl"
           placeholder="Ukázky dalších prací a detailů instalací."
+          placeholderByLocale={{ cs: "Ukázky dalších prací a detailů instalací.", en: "Examples of other work and installation details." }}
           initialValue={initialContent["gallery.intro"]}
+          initialValueByLocale={byLoc("gallery.intro")}
         />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -42,7 +49,9 @@ export default function Gallery({ initialContent = {} }: GalleryProps) {
                 as="p"
                 className="text-sm font-medium text-black"
                 placeholder="Geberit – předstěna"
+                placeholderByLocale={{ cs: "Geberit – předstěna", en: "Geberit – in‑wall frame" }}
                 initialValue={initialContent["gallery.items.0.title"]}
+                initialValueByLocale={byLoc("gallery.items.0.title")}
               />
             </div>
           </div>
@@ -64,7 +73,9 @@ export default function Gallery({ initialContent = {} }: GalleryProps) {
                 as="p"
                 className="text-sm font-medium text-black"
                 placeholder="Umývadlo – rozvody"
+                placeholderByLocale={{ cs: "Umývadlo – rozvody", en: "Sink – rough‑in" }}
                 initialValue={initialContent["gallery.items.1.title"]}
+                initialValueByLocale={byLoc("gallery.items.1.title")}
               />
             </div>
           </div>
@@ -86,7 +97,9 @@ export default function Gallery({ initialContent = {} }: GalleryProps) {
                 as="p"
                 className="text-sm font-medium text-black"
                 placeholder="Drážky ve zdi – rozvody"
+                placeholderByLocale={{ cs: "Drážky ve zdi – rozvody", en: "Wall chases – rough‑in" }}
                 initialValue={initialContent["gallery.items.2.title"]}
+                initialValueByLocale={byLoc("gallery.items.2.title")}
               />
             </div>
           </div>
@@ -108,7 +121,9 @@ export default function Gallery({ initialContent = {} }: GalleryProps) {
                 as="p"
                 className="text-sm font-medium text-black"
                 placeholder="Ohřívač vody s expanzí"
+                placeholderByLocale={{ cs: "Ohřívač vody s expanzí", en: "Hot water cylinder with expansion" }}
                 initialValue={initialContent["gallery.items.3.title"]}
+                initialValueByLocale={byLoc("gallery.items.3.title")}
               />
             </div>
           </div>
@@ -130,7 +145,9 @@ export default function Gallery({ initialContent = {} }: GalleryProps) {
                 as="p"
                 className="text-sm font-medium text-black"
                 placeholder="Výměna průmyslových uzávěrů"
+                placeholderByLocale={{ cs: "Výměna průmyslových uzávěrů", en: "Industrial gate valves replacement" }}
                 initialValue={initialContent["gallery.items.4.title"]}
+                initialValueByLocale={byLoc("gallery.items.4.title")}
               />
             </div>
           </div>
@@ -152,7 +169,9 @@ export default function Gallery({ initialContent = {} }: GalleryProps) {
                 as="p"
                 className="text-sm font-medium text-black"
                 placeholder="Strojovna – zásobníky a potrubí"
+                placeholderByLocale={{ cs: "Strojovna – zásobníky a potrubí", en: "Plant room – storage tanks and piping" }}
                 initialValue={initialContent["gallery.items.5.title"]}
+                initialValueByLocale={byLoc("gallery.items.5.title")}
               />
             </div>
           </div>
@@ -174,7 +193,9 @@ export default function Gallery({ initialContent = {} }: GalleryProps) {
                 as="p"
                 className="text-sm font-medium text-black"
                 placeholder="Vodoměrná sestava"
+                placeholderByLocale={{ cs: "Vodoměrná sestava", en: "Water meter assembly" }}
                 initialValue={initialContent["gallery.items.6.title"]}
+                initialValueByLocale={byLoc("gallery.items.6.title")}
               />
             </div>
           </div>

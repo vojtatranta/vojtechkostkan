@@ -3,14 +3,17 @@ import EditableContent from "@/components/editable-content";
 
 type HeroImagesProps = {
   initialContent?: Record<string, string | undefined>;
+  initialContentCs?: Record<string, string | undefined>;
+  initialContentEn?: Record<string, string | undefined>;
 };
 
-export default function HeroImages({ initialContent = {} }: HeroImagesProps) {
+export default function HeroImages({ initialContent = {}, initialContentCs, initialContentEn }: HeroImagesProps) {
+  const byLoc = (id: string) => ({ cs: initialContentCs?.[id], en: initialContentEn?.[id] });
   const items = [
-    { title: "Rozdělovač vytápění", image: "/images/mechanical-room-heating-manifold.webp" },
-    { title: "Rozvody vody", image: "/images/bathroom-water-supply-rough-in.webp" },
-    { title: "Topení", image: "/images/radiator-under-window.webp" },
-    { title: "Rekonstrukce", image: "/images/interior-renovation-copper-pipes-room.webp" },
+    { title: "Rozdělovač vytápění", image: "/images/mechanical-room-heating-manifold.webp", en: "Heating manifold" },
+    { title: "Rozvody vody", image: "/images/bathroom-water-supply-rough-in.webp", en: "Water distribution" },
+    { title: "Topení", image: "/images/radiator-under-window.webp", en: "Heating" },
+    { title: "Rekonstrukce", image: "/images/interior-renovation-copper-pipes-room.webp", en: "Renovations" },
   ];
 
   return (
@@ -34,7 +37,9 @@ export default function HeroImages({ initialContent = {} }: HeroImagesProps) {
               as="span"
               className="align-middle"
               placeholder={item.title}
+              placeholderByLocale={{ cs: item.title, en: item.en ?? item.title }}
               initialValue={initialContent[`hero.images.${i}.title`]}
+              initialValueByLocale={byLoc(`hero.images.${i}.title`)}
             />
           </span>
         </div>

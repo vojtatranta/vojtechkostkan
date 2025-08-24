@@ -7,14 +7,19 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import EditableContent from '@/components/editable-content';
+import { useLang } from '@/components/lang-context';
 
 type ContactFormProps = {
   initialContent?: Record<string, string | undefined>;
+  initialContentCs?: Record<string, string | undefined>;
+  initialContentEn?: Record<string, string | undefined>;
 };
 
-export default function ContactForm({ initialContent = {} }: ContactFormProps) {
+export default function ContactForm({ initialContent = {}, initialContentCs, initialContentEn }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const byLoc = (id: string) => ({ cs: initialContentCs?.[id], en: initialContentEn?.[id] });
+  const { locale } = useLang();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,7 +74,9 @@ export default function ContactForm({ initialContent = {} }: ContactFormProps) {
         as="h3"
         className="text-2xl font-light text-black mb-6 text-center"
         placeholder="Potřebujete pomoc s instalacemi, topením nebo opravami?"
+        placeholderByLocale={{ cs: "Potřebujete pomoc s instalacemi, topením nebo opravami?", en: "Need help with installations, heating or repairs?" }}
         initialValue={initialContent["contact.form.title"]}
+        initialValueByLocale={byLoc("contact.form.title")}
       />
       <EditableContent
         id="contact.form.desc1"
@@ -78,34 +85,41 @@ export default function ContactForm({ initialContent = {} }: ContactFormProps) {
         placeholder={
           "Jako kvalifikovaný instalatér a topenář vám osobně pomůžu s jakýmkoliv problémem. Napište mi a já se vám co nejdříve ozvu na telefon."
         }
+        placeholderByLocale={{
+          cs: "Jako kvalifikovaný instalatér a topenář vám osobně pomůžu s jakýmkoliv problémem. Napište mi a já se vám co nejdříve ozvu na telefon.",
+          en: "As a qualified plumber and heating technician, I'll personally help you with any issue. Send me a message and I'll get back to you as soon as possible.",
+        }}
         initialValue={initialContent["contact.form.desc1"]}
+        initialValueByLocale={byLoc("contact.form.desc1")}
       />
       <EditableContent
         id="contact.form.desc2"
         as="p"
         className="text-sm text-neutral-500 mb-8 text-center"
         placeholder="Pracuji v Praze a okolí."
+        placeholderByLocale={{ cs: "Pracuji v Praze a okolí.", en: "I work in Prague and nearby." }}
         initialValue={initialContent["contact.form.desc2"]}
+        initialValueByLocale={byLoc("contact.form.desc2")}
       />
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <Label htmlFor="email" className="text-sm font-medium text-neutral-700">
-              Váš e-mail <span className="text-neutral-400">(pro emailovou odpověď)</span>
+              {locale === 'cs' ? 'Váš e-mail' : 'Your email'} <span className="text-neutral-400">{locale === 'cs' ? '(pro emailovou odpověď)' : '(for email reply)'}</span>
             </Label>
             <Input
               id="email"
               name="email"
               type="email"
               className="mt-2"
-              placeholder="vas@email.cz"
+              placeholder={locale === 'cs' ? 'vas@email.cz' : 'your@email.com'}
             />
           </div>
           
           <div>
             <Label htmlFor="phone" className="text-sm font-medium text-neutral-700">
-              Váš telefon <span className="text-red-500">*</span>
+              {locale === 'cs' ? 'Váš telefon' : 'Your phone'} <span className="text-red-500">*</span>
             </Label>
             <Input
               id="phone"
@@ -120,7 +134,7 @@ export default function ContactForm({ initialContent = {} }: ContactFormProps) {
 
         <div>
           <Label htmlFor="message" className="text-sm font-medium text-neutral-700">
-            Zpráva <span className="text-red-500">*</span>
+            {locale === 'cs' ? 'Zpráva' : 'Message'} <span className="text-red-500">*</span>
           </Label>
           <Textarea
             id="message"
@@ -128,7 +142,7 @@ export default function ContactForm({ initialContent = {} }: ContactFormProps) {
             required
             rows={5}
             className="mt-2"
-            placeholder="Popište prosím váš problém nebo požadavek..."
+            placeholder={locale === 'cs' ? 'Popište prosím váš problém nebo požadavek...' : 'Please describe your issue or request...'}
           />
         </div>
 
@@ -153,7 +167,9 @@ export default function ContactForm({ initialContent = {} }: ContactFormProps) {
                 as="span"
                 className="inline"
                 placeholder="Poslat poptávku"
+                placeholderByLocale={{ cs: 'Poslat poptávku', en: 'Send request' }}
                 initialValue={initialContent["contact.form.button"]}
+                initialValueByLocale={byLoc("contact.form.button")}
               />
             )}
           </Button>
@@ -164,7 +180,9 @@ export default function ContactForm({ initialContent = {} }: ContactFormProps) {
           as="p"
           className="text-xs text-neutral-500 text-center"
           placeholder="* Označená pole jsou povinná"
+          placeholderByLocale={{ cs: '* Označená pole jsou povinná', en: '* Required fields' }}
           initialValue={initialContent["contact.form.footnote"]}
+          initialValueByLocale={byLoc("contact.form.footnote")}
         />
       </form>
     </div>
